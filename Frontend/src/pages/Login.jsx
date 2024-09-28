@@ -14,7 +14,7 @@ const AdminLogin = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [isForgotPassword, setIsForgotPassword] = useState(false);
-  const [resetCode, setResetCode] = useState('');
+  const [otp, setResetCode] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [message, setMessage] = useState('');
@@ -41,7 +41,9 @@ const AdminLogin = () => {
     return () => clearInterval(interval);
   }, [canResend, isForgotPassword]);
 
+  //Handle login
   const handleLogin = async (e) => {
+    console.log(apiUrl);
     e.preventDefault();
     setError('');
     try {
@@ -68,10 +70,12 @@ const AdminLogin = () => {
     }
   };
 
+   // Handle forgot password submission
   const handleForgotPasswordSubmit = async () => {
+    console.log(apiUrl);
     try {
       // Automatically send OTP when Forgot Password is clicked
-      await axios.post('/api/admin/forgot-password', { email: username });
+      await axios.post(`${apiUrl}/api/forgot-password`, { username });
       setMessage('The OTP has been sent to the registered Gmail ID.');
       setIsForgotPassword(true);
       setCanResend(false);
@@ -88,7 +92,7 @@ const AdminLogin = () => {
       return;
     }
     try {
-      await axios.post('/api/admin/reset-password', { email: username, resetCode, newPassword });
+      await axios.post(`${apiUrl}/api/reset-password`, { username, otp, newPassword });
       setMessage('Password has been reset successfully.');
       setIsForgotPassword(false);
     } catch (err) {
@@ -99,7 +103,7 @@ const AdminLogin = () => {
   const handleResendCode = async () => {
     if (canResend) {
       try {
-        await axios.post('/api/admin/forgot-password', { email: username });
+         await axios.post(`${apiUrl}/api/forgot-password`, { username });
         setMessage('Password reset code resent to your email.');
         setCanResend(false);
         setTimer(90); // Reset the timer
@@ -181,6 +185,22 @@ const AdminLogin = () => {
             </>
           ) : (
             <>
+
+              <Input
+                placeholder="Username"
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                mb="4"
+                size="lg"
+              />
+              <Input
+                placeholder="Reset Code"
+                value={otp}
+                onChange={(e) => setResetCode(e.target.value)}
+                mb="4"
+                size="lg"
+              />
               <InputGroup size="lg">
                 <Input
                   type={showPassword ? 'text' : 'password'}
@@ -215,14 +235,10 @@ const AdminLogin = () => {
                   </Button>
                 </InputRightElement>
               </InputGroup>
-              <Input
-                placeholder="OTP"
-                value={resetCode}
-                onChange={(e) => setResetCode(e.target.value)}
-                mb="4"
-                size="lg"
-              />
+             
               <Button
+                variant="link"
+                onClick={handleResetPassword}
                 type="submit"
                 colorScheme="teal"
                 width="full"
