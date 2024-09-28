@@ -13,6 +13,7 @@ const createAdmin = async () => {
     const admin = new Admin({
       username: "talentconnectadmin", // Change this to your desired username
       password: hashedPassword,
+      email: "hr.talentconnect111@gmail.com",
     });
 
     await admin.save();
