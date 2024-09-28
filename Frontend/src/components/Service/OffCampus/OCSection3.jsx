@@ -1,12 +1,12 @@
 import React from "react";
-import { Container, Stack, Flex,  Heading, Box, Text, useBreakpointValue } from "@chakra-ui/react";
+import { Container, Stack, Flex, Heading, Box, Text, useBreakpointValue } from "@chakra-ui/react";
 
 const OCSection3 = () => {
   const cardData = [
     {
-      title: "Recruitment fairs",
+      title: "Recruitment Fairs",
       imageUrl:
-        "https://www.cubsucc.com/contentFiles/components/GDEventBooking/29/large/careersfairUCCedot.jpg",
+        "https://www.wbmdfc.org/public/images/Gallery/MEGA%20JOB%20FAIR/DSC_2127_1582189496.jpg",
       description:
         "We organize targeted job fairs in major cities, bringing together top employers and qualified candidates for face-to-face networking and interviews.",
     },
@@ -15,7 +15,7 @@ const OCSection3 = () => {
       imageUrl:
         "https://resumegenius.com/wp-content/uploads/best-job-boards.png",
       description:
-        "Talentconnect’s comprehensive job portal connects employers with a vast pool of skilled candidates, enabling efficient off-campus hiring and matching.", 
+        "Talentconnect’s comprehensive job portal connects employers with a vast pool of skilled candidates, enabling efficient off-campus hiring and matching.",
     },
     {
       title: "Virtual Interviews",
@@ -27,44 +27,41 @@ const OCSection3 = () => {
   ];
 
   return (
-    <Container maxW={"2x1"} bg="#B7CFF9"  minH={"80vh"}>
-     <Flex justifyContent="center" alignItems="center">
-  <Heading
-    fontFamily="ClashDisplay"
-    fontSize={{ base: "xl", md: "2xl", lg: "4xl" }} // Responsive font size
-    fontWeight="bolder"
-    p="2"
-   mt={{ base: 10, md: 20 }}
-   mb={{ base: 10, md: 20 }}
-  >
-    <Text as="span" color="black">
-      Explore Our Proven
-    </Text>
-    <Text as="span" color="blue.400">
-      {' '}OffCampus Solution
-    </Text>
-  </Heading>
-</Flex>
+    <Container maxW="full" bg="#B7CFF9" minH="80vh" py={10} px={{ base: 4, md: 8 }}>
+      <Flex justifyContent="center" alignItems="center" mb={10}>
+        <Heading
+          fontFamily="ClashDisplay"
+          fontSize={{ base: "2xl", md: "3xl", lg: "4xl" }}
+          fontWeight="bolder"
+          textAlign="center"
+        >
+          <Text as="span" color="black">
+            Explore Our Proven
+          </Text>
+          <Text as="span" color="blue.400">
+            {" "}OffCampus Solution
+          </Text>
+        </Heading>
+      </Flex>
 
       <Stack
         direction={useBreakpointValue({ base: "column", md: "row" })}
+        spacing={{ base: 8, md: 10 }}
         justify="space-around"
-        spacing={10}
+        align="center"
       >
         {cardData.map((card, index) => (
           <Box
             key={index}
-            //maxW={{ base: "100%", md: "md" }}
-            w={"full"}
-            h={"50vh"}
+            w={{ base: "100%", md: "30%" }}
+            h={{ base: "60vh", md: "50vh" }}
             overflow="hidden"
             position="relative"
             borderRadius="xl"
             boxShadow="lg"
-            bgSize="cover"
             bgImage={`url(${card.imageUrl})`}
+            bgSize="cover"
             bgPosition="center"
-            
             _hover={{
               _before: {
                 content: `""`,
@@ -106,10 +103,12 @@ const OCSection3 = () => {
               alignItems="center"
               textAlign="center"
             >
-              <Heading fontFamily={"ClashDisplay"} textTransform={"uppercase"} color="blue.400" as="h3" size="md" mb={2}>
-                {card.title} <br /> <br />
+              <Heading fontFamily="ClashDisplay" textTransform="uppercase" color="blue.400" as="h3" size="md" mb={2}>
+                {card.title}
               </Heading>
-              <Text text-align= {"justify"}>{card.description}</Text>
+              <Text fontSize={{ base: "sm", md: "md" }} textAlign="justify">
+                {card.description}
+              </Text>
             </Box>
             <Box
               position="relative"
@@ -122,9 +121,8 @@ const OCSection3 = () => {
               color="white"
               className="titleBox"
               textAlign="center"
-              
             >
-              <Heading fontFamily={"ClashDisplay"}  as="h3" size="md">
+              <Heading fontFamily="ClashDisplay" as="h3" size="md">
                 {card.title}
               </Heading>
             </Box>

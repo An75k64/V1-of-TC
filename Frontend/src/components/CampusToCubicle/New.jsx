@@ -1,7 +1,7 @@
 import { Box, Heading, Text, Button, VStack, HStack, useBreakpointValue } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { FaArrowRight } from 'react-icons/fa';
-import hVideo from "../../assets/videos/hVideo.mp4"; // Local video
+import hVideo from "../../assets/videos/Cam1.mp4"; // Local video
 
 const MotionBox = motion(Box);
 

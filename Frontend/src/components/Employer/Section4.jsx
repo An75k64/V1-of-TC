@@ -1,114 +1,79 @@
 import React from 'react';
-import {
-  chakra,
-  Stack,
-  useColorModeValue,
-  Container,
-  Link,
-  Box,
-  Button,
-  keyframes,
-} from '@chakra-ui/react';
+import { Box, Flex,Heading, Text, Button } from '@chakra-ui/react';
+import { Link } from 'react-router-dom';
 
-const Index = () => {
+const CollegeCTA = () => {
   return (
-    <Container maxW="full" p={0} m={0}>
-      <Section4 />
-    </Container>
+    <Flex
+      direction={{ base: 'column', md: 'row' }} // Stack vertically on small screens, horizontally on larger screens
+      align="center"
+      justify="space-between"
+      p={8}
+      bg="blue.50"
+    >
+      <Box flex={1} textAlign={{ base: 'center', md: 'left' }} mb={{ base: 6, md: 0 }}>
+        <Flex >
+                <Heading
+                  fontFamily="ClashDisplay"
+                  fontSize={{ base: "xl", md: "2xl", lg: "5xl" }} // Responsive font size
+                  fontWeight="bold"
+                  p="2"
+                >
+                  <Text as="span" color="black">
+                    Empower Your
+                  </Text>
+                  <Text as="span" color="blue.400">
+                    {' '}Company Today
+                  </Text>
+                </Heading>
+              </Flex>
+        <Text fontSize={"20px"} color="gray.600">
+          Join TalentConnect and Revolutionize your Hiring Process.
+        </Text>
+      </Box>
+      <Flex
+        direction={{ base: 'column', md: 'row' }}
+        align="center"
+        justify={{ base: 'center', md: 'flex-start' }}
+      >
+         <Link to="/company-form">
+        <Button
+          colorScheme="teal"
+          size="lg"
+          mb={{ base: 4, md: 0 }}
+          mr={{ base: 0, md: 4 }}  // Add margin-right on medium screens and larger
+          onClick={() => console.log('Get Started clicked')}
+          _hover={{
+              bgGradient: 'linear(to-r, #0ea5e9, #2563eb)',
+              transform: 'scale(1.05)',
+              textDecoration: 'none', // Ensure no underline on hover
+              color:"white"
+            }}
+        >
+          Get Started
+        </Button>
+        </Link>
+
+        <Link to="/contact">
+        <Button
+          variant="outline"
+          colorScheme="blue"
+          size="lg"
+          ml={{ base: 0, md: 4 }}  // Add margin-left on medium screens and larger
+          onClick={() => console.log('Contact Us clicked')}
+          _hover={{
+              bgGradient: 'linear(to-r, #0ea5e9, #2563eb)',
+              transform: 'scale(1.05)',
+              textDecoration: 'none', // Ensure no underline on hover
+              color:"white"
+            }}
+        >
+          Contact Us
+        </Button>
+        </Link>
+      </Flex>
+    </Flex>
   );
 };
 
-function Section4() {
-  // Keyframes for animations
-  const fadeIn = keyframes`
-    0% { opacity: 0; transform: translateY(10px); }
-    100% { opacity: 1; transform: translateY(0); }
-  `;
-
-  const pulseAnimation = keyframes`
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-  `;
-
-  return (
-    <Stack
-      direction={{ base: 'column', md: 'row' }}
-      spacing={5}
-      alignItems="center"
-      justifyContent="center"
-      rounded="lg"
-      boxShadow="lg"
-      bg={useColorModeValue('gray.100', 'gray.700')}
-      p={{ base: 8, md: 12 }}
-      
-      position="relative"
-      overflow="hidden"
-      width="100%"
-      animation={`${fadeIn} 0.8s ease-out`}
-      _before={{
-        content: `""`,
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        backgroundImage: 'url(https://images.unsplash.com/photo-1533741987458-28b150cd6c46?crop=entropy&cs=tinysrgb&fit=max&ixid=MXwyMjEyNjN8MHwxfGFsbHwxfHx8fHx8fHwxNjg3NzY5MzA&ixlib=rb-1.2.1&q=80&w=1080)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        zIndex: -1,
-        opacity: 0.3,
-      }}
-    >
-      <Box
-        bg={useColorModeValue('rgba(255, 255, 255, 0.9)', 'rgba(0, 0, 0, 0.9)')}
-        p={8}
-        rounded="lg"
-        boxShadow="md"
-        textAlign="center"
-        zIndex={1}
-        width="100%"
-        animation={`${fadeIn} 1.2s ease-out`}
-      >
-        <chakra.h1 fontSize="4xl" lineHeight={1.2} fontWeight="bold" mb={4}>
-          Ready to get started?
-        </chakra.h1>
-        <chakra.h2
-          fontSize="2xl"
-          lineHeight={1.2}
-          fontWeight="bold"
-          bgGradient="linear(to-l, #0ea5e9, #2563eb)"
-          bgClip="text"
-          mb={6}
-          animation={`${pulseAnimation} 2s infinite`}
-        >
-          Get in touch or create an account.
-        </chakra.h2>
-        <Button
-            as={Link}
-            href="company-form"
-            color="white"
-            variant="solid"
-            size="lg"
-            rounded="md"
-            lineHeight={1}
-            bg={"teal.400"}
-            _hover={{
-              bgGradient: 'linear(to-r, #0ea5e9, #2563eb)',
-              transform: 'scale(1.1)',
-              textDecoration: 'none' // Ensure no underline on hover
-            }}
-            _active={{
-              transform: 'scale(0.98)',
-              textDecoration: 'none' // Ensure no underline when active
-            }}
-            transition="all 0.3s ease"
-          >
-            Get Started
-          </Button>
-
-      </Box>
-    </Stack>
-  );
-}
-
-export default Index;
+export default CollegeCTA;

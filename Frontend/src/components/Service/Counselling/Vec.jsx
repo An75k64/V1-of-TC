@@ -90,27 +90,27 @@ const AnimatedFuturePoints = () => {
 
       {/* Floating text points in a curve */}
       <FuturePoint
-        point="Achieve Goals"
+        point="Higher Studies"
         index={0}
         position={{ left: '-48%', top: '30%', mobileLeft: '-50%', mobileTop: '42%' }}
       />
       <FuturePoint
-        point="Career"
+        point="Start Up"
         index={1}
         position={{ left: '34%', top: '15%', mobileLeft: '35%', mobileTop: '35%' }}
       />
       <FuturePoint
-        point="Studies"
+        point="Passion"
         index={2}
         position={{ left: '100%', top: '30%', mobileLeft: '98%', mobileTop: '42%' }}
       />
       <FuturePoint
-        point="Build a Startup"
+        point="Government Job"
         index={3}
         position={{ left: '-50%', top: '65%', mobileLeft: '-50%', mobileTop: '58%' }}
       />
       <FuturePoint
-        point="Graduation"
+        point="Career"
         index={4}
         position={{ left: '97%', top: '65%', mobileLeft: '90%', mobileTop: '58%' }}
       />

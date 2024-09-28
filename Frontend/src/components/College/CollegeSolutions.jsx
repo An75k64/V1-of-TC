@@ -1,5 +1,5 @@
 import React from "react";
-import { Container,Flex,  Stack, Heading, Box, Text, useBreakpointValue } from "@chakra-ui/react";
+import { Container, Flex, Stack, Heading, Box, Text, useBreakpointValue } from "@chakra-ui/react";
 
 const CollegeSolutions = () => {
   const cardData = [
@@ -10,7 +10,6 @@ const CollegeSolutions = () => {
       description:
         "Connect with numerous top-tier employers seamlessly through our extensive network, bringing a wide range of opportunities directly to you.",
     },
-    
     {
       title: "Comprehensive Training",
       imageUrl:
@@ -23,40 +22,39 @@ const CollegeSolutions = () => {
       imageUrl:
         "https://images.pexels.com/photos/7688336/pexels-photo-7688336.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
       description:
-        "At TalentConnect, we develop detailed strategies to create a strong brand presence on campus, enhancing your visibility and reputation. Our expertise includes showcasing successful campus branding campaigns that have effectively engaged students. Let us help you build a compelling and memorable brand presence within academic communities.",
+        "Develop detailed strategies to create a strong brand presence on campus, enhancing visibility and reputation with successful campaigns.",
     },
-    
   ];
 
   return (
-    <Container maxW={"full"} bg="gray.100"  minH={"90vh"}>
-       <Flex justifyContent="center" alignItems="center">
-                <Heading
-                  fontFamily="ClashDisplay"
-                  fontSize={{ base: "xl", md: "2xl", lg: "4xl" }} // Responsive font size
-                  fontWeight="bold"
-                  p="2"
-                  mt={6}
-                  mb={6}
-                >
-                  <Text as="span" color="black">
-                    TalentConnect
-                  </Text>
-                  <Text as="span" color="blue.400">
-                    {' '}Solutions for Colleges
-                  </Text>
-                </Heading>
-              </Flex>
+    <Container maxW={"full"} bg="gray.100" minH={"90vh"} p={{ base: 4, md: 8, lg: 12 }}>
+      <Flex justifyContent="center" alignItems="center">
+        <Heading
+          fontFamily="ClashDisplay"
+          fontSize={{ base: "2xl", md: "3xl", lg: "4xl" }} // Responsive font size
+          fontWeight="bold"
+          textAlign="center"
+          mb={8}
+        >
+          <Text as="span" color="black">
+            TalentConnect
+          </Text>
+          <Text as="span" color="blue.400">
+            {" "}Solutions for Colleges
+          </Text>
+        </Heading>
+      </Flex>
       <Stack
         direction={useBreakpointValue({ base: "column", md: "row" })}
         justify="space-around"
         spacing={10}
+        alignItems="center"
       >
         {cardData.map((card, index) => (
           <Box
             key={index}
-            w={"full"}
-            h={"50vh"}
+            w={{ base: "90%", md: "45%", lg: "30%" }} // Responsive width for small and large screens
+            h={{ base: "40vh", md: "50vh" }}
             overflow="hidden"
             position="relative"
             borderRadius="xl"
@@ -108,7 +106,7 @@ const CollegeSolutions = () => {
               <Heading fontFamily={"ClashDisplay"} textTransform={"uppercase"} color="blue.400" as="h3" size="md" mb={2}>
                 {card.title}
               </Heading>
-              <Text textAlign={"center"}>{card.description}</Text>
+              <Text fontSize={{ base: "sm", md: "md" }}>{card.description}</Text>
             </Box>
             <Box
               position="relative"

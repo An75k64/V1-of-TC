@@ -11,15 +11,13 @@ import {
   Link,
 } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
-import section4Image from "../../../assets/images/OnCampus/section4.png"; // Adjust the path as needed
+import section4Image from "../../../assets/images/OnCampus/s4.png"; // Adjust the path as needed
 
 const Section4 = () => {
-  
   return (
-    <Stack minH={"100vh"} direction={{ base: "column", md: "row" }} mt={10}>
+    <Stack minH={"100vh"} direction={{ base: "column", md: "row" }}  mt={{ base: 10, md: 0 }}>
       <Flex flex={1} align={"center"} justify={"center"}>
         <Box
-          
           width="100%"
           maxHeight="50vh"
         >
@@ -41,12 +39,18 @@ const Section4 = () => {
       </Flex>
       <Flex p={8} flex={1} align={"center"} justify={"center"}>
         <Stack spacing={6} w={"full"} maxW={"lg"}>
+          <Flex justifyContent="center" alignItems="center">
           <Heading fontSize={{ base: "3xl", md: "4xl", lg: "5xl" }}>
-            <Text  fontFamily={"ClashDisplay"} color={"blue.400"}>
+            <Text  fontFamily={"ClashDisplay"} color={"black"}>
              Questions?
-             Collaborations? Let's Talk.
-            </Text>            
+             Collaborations?
+            </Text>  
+            <Text  fontFamily={"ClashDisplay"} color={"blue.400"}>
+             Let's Talk.
+            </Text> 
+                      
           </Heading>
+          </Flex>
           <Text fontSize={{ base: "md", lg: "lg" }} color={"gray.500"}>
             Empower Your Campus Recruitment with TalentConnect - Your Gateway to Top Talent!
           </Text>
@@ -58,7 +62,7 @@ const Section4 = () => {
               rounded={"full"}
               bg={"gray.500"}
               color={"white"}
-              _hover={{ transform: "scale(1.05)", boxShadow: "lg",  bg: "blue.300", color:"white" }}
+              _hover={{ transform: "scale(1.05)", boxShadow: "lg" , bg: "blue.300", color:"white"}}
             >
               Connect With Us
             </Button>

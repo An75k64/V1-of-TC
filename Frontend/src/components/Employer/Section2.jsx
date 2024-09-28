@@ -1,124 +1,90 @@
-import React from 'react'
-import {
-  Box,
-  Container,
-  Heading,
-  SimpleGrid,
-  Icon,
-  Text,
-  Stack,
-  Flex,
-  HStack,
-  VStack,
-  useColorModeValue,
-} from '@chakra-ui/react'
-import { Search2Icon, RepeatIcon, StarIcon, LockIcon } from '@chakra-ui/icons'
+import { Box, Heading, SimpleGrid, Icon, Text, Stack, Flex } from "@chakra-ui/react";
+import { FcBusinesswoman, FcComboChart, FcCurrencyExchange, FcCollaboration } from "react-icons/fc";
 
-function Section2() {
-  const features = [
-    {
-      title: "Talent Discovery",
-      description: "Difficulty in identifying qualified candidates.",
-      icon: Search2Icon,
-    },
-    {
-      title: "Inefficient Processes",
-      description: "Time-consuming and costly recruitment procedures.",
-      icon: RepeatIcon,
-    },
-    {
-      title: "Skills Readiness",
-      description: "New hires often require extensive training.",
-      icon: StarIcon,
-    },
-    {
-      title: "Retention Rates",
-      description: "Challenges in retaining fresh talent.",
-      icon: LockIcon,
-    },
-  ];
-
-  const bgGradient = useColorModeValue('linear(to-r, blue.50, gray.100)', 'linear(to-r, blue.900, gray.700)');
-  const iconColor = useColorModeValue('blue.500', 'blue.300');
-  const cardBg = useColorModeValue('white', 'gray.800');
-  const cardBorderColor = useColorModeValue('blue.100', 'blue.700');
-
+// Feature component for displaying each challenge
+const Feature = ({ title, text, icon }) => {
   return (
-    <Box
-      p={{ base: 10, md: 20 }}
-      bgGradient={bgGradient}
-      
+    <Stack
+      align="center"
+      p={6}
       borderRadius="lg"
-      boxShadow="xl"
-      transition="0.3s ease-in-out"
-      _hover={{ boxShadow: '2xl' }}
+      bg="white"
+      shadow="xl"
+      transition="all 0.3s ease"
+      _hover={{
+        transform: "scale(1.07)",
+        boxShadow: "2xl",
+        bgGradient: "linear(to-r, blue.100, teal.50)",
+      }}
     >
-      <Stack spacing={6} as={Container} maxW={'3xl'} textAlign={'center'}>
-         <Flex justifyContent="center" alignItems="center">
-                <Heading
-                  fontFamily="ClashDisplay"
-                  fontSize={{ base: "xl", md: "2xl", lg: "4xl" }} // Responsive font size
-                  fontWeight="bold"
-                  p="2"
-                >
-                  <Text as="span" color="black">
-                    Challenges Faced by Companies
-                  </Text>
-                  <Text as="span" color="blue.400">
-                    {' '}in Hiring Freshers
-                  </Text>
-                </Heading>
-              </Flex>
-        <Text color={'black'} fontSize={{ base: 'md', md: 'lg' }}>
-          Partner with TalentConnect today to simplify your fresh talent acquisition journey
-        </Text>
-      </Stack>
-      <Container maxW={'6xl'} mt={12}>
-        <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={10}>
-          {features.map((feature, index) => (
-            <Box
-              key={index}
-              p={5}
-              bg={cardBg}
-              borderRadius="xl"
-              boxShadow="lg"
-              borderWidth="1px"
-              borderColor={cardBorderColor}
-              _hover={{
-                transform: 'translateY(-10px) scale(1.05)',
-                boxShadow: '2xl',
-                bgGradient: 'linear(to-r, blue.100, blue.200)',
-                transition: '0.4s ease-in-out',
-                cursor: 'pointer',
-              }}
-              transition="0.3s ease-in-out"
-            >
-              <HStack spacing={4}>
-                <Box
-                  color={iconColor}
-                  p={3}
-                  bgGradient="linear(to-b, blue.100, blue.300)"
-                  borderRadius="full"
-                  boxShadow="md"
-                  transition="0.4s ease-in-out"
-                  _hover={{
-                    bgGradient: 'linear(to-b, blue.300, blue.500)',
-                    transform: 'rotate(15deg)',
-                  }}
-                >
-                  <Icon as={feature.icon} w={8} h={8} />
-                </Box>
-                <VStack align={'start'}>
-                  <Text fontWeight={800} fontSize="lg">{feature.title}</Text>
-                  <Text color={'black'}>{feature.description}</Text>
-                </VStack>
-              </HStack>
-            </Box>
-          ))}
-        </SimpleGrid>
-      </Container>
-    </Box>
-  )
-}
+      <Flex
+        w={16}
+        h={16}
+        align={"center"}
+        justify={"center"}
+        rounded={"full"}
+        bg={"blue.500"}
+        mb={4}
+        transition="all 0.3s ease"
+        _hover={{
+          bg: "blue.300",
+          transform: "scale(1.2) rotate(10deg)",
+          boxShadow: "0 0 20px rgba(0, 128, 255, 0.6)",
+        }}
+      >
+        {icon}
+      </Flex>
+      <Text fontWeight={700} fontSize="lg" textAlign="center">
+        {title}
+      </Text>
+      <Text color={"gray.600"} textAlign="center">
+        {text}
+      </Text>
+    </Stack>
+  );
+};
 
-export default Section2;
+export default function CollegeChallenges() {
+  return (
+    <Box p={{ base: 8, md: 20 }} bgGradient="linear(to-br, gray.100, gray.300)">
+      <Flex justifyContent="center" alignItems="center" mb={10}>
+        <Heading
+          fontFamily="ClashDisplay"
+          fontSize={{ base: "2xl", md: "4xl", lg: "5xl" }}
+          fontWeight="bold"
+          textAlign="center"
+        >
+          <Text as="span" color="gray.800">
+            Challenges Companies Face in
+          </Text><br/>
+          <Text as="span" color="blue.400">
+            Finding Skilled Employees
+          </Text>
+        </Heading>
+      </Flex>
+
+      <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={10}>
+        <Feature
+          icon={<Icon as={FcBusinesswoman} w={10} h={10} />}
+          title={"Talent Discovery"}
+          text={"Difficulty in identifying qualified candidates."}
+        />
+        <Feature
+          icon={<Icon as={FcCurrencyExchange} w={10} h={10} />}
+          title={"Inefficient Processes"}
+          text={"Time-consuming and costly recruitment procedures."}
+        />
+        <Feature
+          icon={<Icon as={FcComboChart} w={10} h={10} />}
+          title={"Skills Readiness"}
+          text={"New hires often require extensive training."}
+        />
+        <Feature
+          icon={<Icon as={FcCollaboration} w={10} h={10} />}
+          title={"Retention Rates"}
+          text={"Challenges in retaining fresh talent."}
+        />
+      </SimpleGrid>
+    </Box>
+  );
+}

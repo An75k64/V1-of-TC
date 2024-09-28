@@ -7,22 +7,21 @@ const Feature = ({ title, text, icon }) => {
     <Stack
       align="center"
       transition="transform 0.3s, box-shadow 0.3s"
-      _hover={{ transform: "scale(1.05)", boxShadow: "lg",}}
+      _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
       p={5}
       borderRadius="md"
       bg="white"
       shadow="md"
-      
     >
       <Flex
-        w={16}
-        h={16}
+        w={{ base: 12, md: 16 }}
+        h={{ base: 12, md: 16 }}
         align={"center"}
         justify={"center"}
         color={"white"}
         rounded={"full"}
         bg={"blue.500"}
-        mb={1}
+        mb={2}
         transition="all 0.3s ease"
         _hover={{
           bg: "blue.300",
@@ -31,10 +30,10 @@ const Feature = ({ title, text, icon }) => {
       >
         {icon}
       </Flex>
-      <Text fontWeight={700} textAlign="center">
+      <Text fontWeight={700} textAlign="center" fontSize={{ base: "md", md: "lg" }}>
         {title}
       </Text>
-      <Text color={"black"} textAlign="center">
+      <Text color={"black"} textAlign="center" fontSize={{ base: "sm", md: "md" }}>
         {text}
       </Text>
     </Stack>
@@ -43,32 +42,36 @@ const Feature = ({ title, text, icon }) => {
 
 export default function CollegeChallenges() {
   return (
-    <Box p={20} bg="#f4f4f3ff">
+    <Box p={{ base: 5, md: 20 }} bg="#f4f4f3ff">
       <Flex justifyContent="center" alignItems="center">
-                <Heading
-                  fontFamily="ClashDisplay"
-                  fontSize={{ base: "xl", md: "2xl", lg: "4xl" }} // Responsive font size
-                  fontWeight="bold"
-                  p="2"
-                  mb={6}
-                >
-                  <Text as="span" color="black">
-                    Challenges Faced by Colleges
-                  </Text>
-                  <Text as="span" color="blue.400">
-                    {' '}in Campus Recruitment
-                  </Text>
-                </Heading>
-              </Flex>
+        <Heading
+          fontFamily="ClashDisplay"
+          fontSize={{ base: "2xl", md: "3xl", lg: "4xl" }} // Responsive font size
+          fontWeight="bold"
+          p="2"
+          mb={6}
+          textAlign="center"
+        >
+          <Text as="span" color="black">
+            Challenges Faced by Colleges
+          </Text>
+          <Text as="span" color="blue.400">
+            {' '}in Campus Recruitment
+          </Text>
+        </Heading>
+      </Flex>
+      
       <Text
-        fontSize={{ base: "md", lg: "lg" }}
+        fontSize={{ base: "sm", md: "lg" }}
         color={"black"}
         mb={10}
         textAlign="center"
+        px={{ base: 4, md: 0 }}  // Padding for better readability on small screens
       >
         Colleges often face several challenges in campus recruitment, including limited employer reach, resource constraints, skill gaps among graduates, and a lack of actionable feedback.
       </Text>
-      <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={10}>
+
+      <SimpleGrid columns={{ base: 1, sm: 2, lg: 4 }} spacing={10}>
         <Feature
           icon={<Icon as={FcBusinessman} w={10} h={10} />}
           title={"Limited Employer Reach"}

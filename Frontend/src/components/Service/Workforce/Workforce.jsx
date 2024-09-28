@@ -244,7 +244,7 @@ export default function OnCampus() {
         </VStack>
       </Flex>
 
-      {/* New Section - Employer Branding */}
+      {/* New Section - Employer Branding
       <Flex
          // Responsive margin-top
         w="full"
@@ -299,10 +299,10 @@ export default function OnCampus() {
             </Box>
           
         </VStack>
-      </Flex>
+      </Flex>  */}
 
     
-      {/*EmployerBranding */}
+      {/*EmployerBranding 
       <Flex
          // Responsive margin-top
         w="full"
@@ -357,7 +357,7 @@ export default function OnCampus() {
             </Box>
         
         </VStack>
-      </Flex>
+      </Flex> */}
        
 
 

@@ -307,6 +307,7 @@ const CompanyForm = () => {
                   <Checkbox value="Internship Programs">Internship Programs</Checkbox>
                   <Checkbox value="Part of Job Fairs">Part of Job Fairs</Checkbox>
                   <Checkbox value="Employee Training Programs">Employee Training Programs</Checkbox>
+                  <Checkbox value="Employer Branding">Employer Branding</Checkbox>
                 </Stack>
               </CheckboxGroup>
               <Text color="red.500" fontSize="sm">

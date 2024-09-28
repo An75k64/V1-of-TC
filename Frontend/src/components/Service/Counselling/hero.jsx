@@ -32,9 +32,8 @@ function HeroSection() {
   return (
     <Flex
       w="full"
-      h={useBreakpointValue({ base: "100vh", md: "100vh" })}  // Increased mobile height for better fit
+      h={useBreakpointValue({ base: "150vh", md: "100vh" })}  // Increased mobile height for better fit
       bgGradient="linear(to-br, blue.300, purple.200)"
-      borderBottomRadius="20px"
       overflow="hidden"
       position="relative"
       justifyContent="center"
@@ -162,7 +161,7 @@ function HeroSection() {
         mb={useBreakpointValue({ base: 6, md: 0 })}
         px={useBreakpointValue({ base: 4, md: 0 })}
       >
-        <Vec width={useBreakpointValue({ base: "70%", md: "100%" })} />
+        <Vec width={useBreakpointValue({ base: "60%", md: "100%",lg:'100%' })} />
       </Box>
     </Flex>
   );

@@ -27,7 +27,7 @@ const Section3 = () => {
   ];
 
   return (
-    <Container maxW="100%" bg="gray.100" mt={135} minH={"80vh"}>
+    <Container maxW="100%"  bg="rgb(221, 201, 245)" mt={10} minH={"80vh"} borderRadius={20}>
       <Heading
         fontFamily={"ClashDisplay"}
         fontSize={{ base: "2xl", sm: "4xl" }}
