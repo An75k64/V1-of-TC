@@ -13,6 +13,11 @@ import {
   AvatarGroup,
   useBreakpointValue,
   Icon,
+  CloseButton,
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
 } from "@chakra-ui/react";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
@@ -62,13 +67,14 @@ const validationSchema = Yup.object({
     )
     .required("Email is required"),
   phone: Yup.string()
-    .matches(/^\d{10}$/, "Phone number must be exactly 10 digits")
+    .matches(/^[0-9]{10}$/, "Phone number must be exactly 10 digits")
     .required("Phone number is required"),
   resume: Yup.mixed().required("Resume is required"),
 });
 
 export default function PostResume() {
   const [message, setMessage] = useState(null);
+  const [showError, setShowError] = useState(false); // Controls visibility of error popup
   const fileInputRef = useRef();
 
   const avatarSize = useBreakpointValue({ base: "md", md: "lg" });
@@ -79,6 +85,20 @@ export default function PostResume() {
     lg: "30vw",
   });
   const blurZIndex = useBreakpointValue({ base: -1, md: -1, lg: 0 });
+
+  const handleFileChange = (event, setFieldValue) => {
+    const file = event.currentTarget.files[0];
+    const allowedExtensions = /(\.pdf|\.doc|\.docx)$/i;
+    
+    if (!allowedExtensions.exec(file.name)) {
+      setMessage({ text: "Please upload a valid resume in .pdf or .doc/.docx format.", type: "error" });
+      setShowError(true);
+      fileInputRef.current.value = ""; // Reset the file input
+    } else {
+      setFieldValue("resume", file);
+      setShowError(false);
+    }
+  };
 
   const handleSubmit = async (values, actions) => {
     const data = new FormData();
@@ -272,15 +292,15 @@ export default function PostResume() {
                     <Text color="red.500">{errors.phone}</Text>
                   )}
 
-                  <Field name="resume">
+                           <Field name="resume">
                     {() => (
                       <div>
                         <input
                           type="file"
                           accept=".pdf,.doc,.docx"
-                          onChange={(event) => {
-                            setFieldValue("resume", event.currentTarget.files[0]);
-                          }}
+                          onChange={(event) =>
+                            handleFileChange(event, setFieldValue)
+                          }
                           ref={fileInputRef}
                           style={{
                             padding: "8px",
@@ -318,23 +338,39 @@ export default function PostResume() {
                 </Button>
               </Form>
             )}
+             
           </Formik>
-          {message && (
-            <Text
-              color={message.type === "success" ? "green.500" : "red.500"}
-              textAlign="center"
-            >
-              {message.text}
-            </Text>
-          )}
+          {message && showError && (
+  <Flex justifyContent="center" alignItems="center" mt={4}>
+    <Alert
+      status={message.type}
+      rounded={"md"}
+      w="100%"
+      maxW="400px"
+    >
+      <AlertIcon />
+      <Box flex="1">
+        <AlertTitle>{message.type === "error" ? "Error" : "Success"}</AlertTitle>
+        <AlertDescription>{message.text}</AlertDescription>
+      </Box>
+      <CloseButton
+        position="absolute"
+        right="8px"
+        top="8px"
+        onClick={() => setShowError(false)}
+      />
+    </Alert>
+  </Flex>
+)}
+
         </Stack>
       </Container>
       <Blur
         position={"absolute"}
-        top={-10}
-        left={-10}
-        style={{ filter: "blur(70px)" }}
+        top={-39}
+        left={-100}
         zIndex={blurZIndex}
+        style={{ filter: "blur(70px)" }}
         width={blurWidth}
       />
     </Box>

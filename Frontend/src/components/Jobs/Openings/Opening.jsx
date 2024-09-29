@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Box, Heading, Input, Button, Flex, useBreakpointValue, Stack, Text } from '@chakra-ui/react';
+import { Box, Heading, Input, Button, Flex, useBreakpointValue, Stack, Text, List, ListItem } from '@chakra-ui/react';
 import { FaSearch } from 'react-icons/fa';
 import { FaLocationDot } from "react-icons/fa6";
 import Card from '../Card/Card.jsx';
@@ -8,16 +8,15 @@ import Card from '../Card/Card.jsx';
 const apiUrl = import.meta.env.VITE_API_BASE_URL;
 
 function Opening() {
-    
-
     const [cards, setCards] = useState([]);
     const [titleQuery, setTitleQuery] = useState('');
     const [locationQuery, setLocationQuery] = useState('');
+    const [locationSuggestions, setLocationSuggestions] = useState([]);
     const [filteredCards, setFilteredCards] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const cardsPerPage = 12;
 
-useEffect(() => {
+    useEffect(() => {
         axios.get(`${apiUrl}/api/cards/cards`)
             .then(response => {
                 setCards(response.data);
@@ -28,6 +27,7 @@ useEffect(() => {
             });
     }, []);
 
+    // Handle search filter for jobs
     const handleSearch = () => {
         const filtered = cards.filter(card =>
             card.title.toLowerCase().includes(titleQuery.toLowerCase()) &&
@@ -37,8 +37,37 @@ useEffect(() => {
         setCurrentPage(1); // Reset to the first page when search is performed
     };
 
+    // Handle page change for pagination
     const handlePageChange = (pageNumber) => {
         setCurrentPage(pageNumber);
+    };
+
+    // Fetch location suggestions
+    const fetchLocationSuggestions = (query) => {
+        if (query.length >= 1) { // Fetch suggestions if input is at least 2 characters
+            // You can replace this with an API call to fetch real location data
+            axios.get(`${apiUrl}/api/cards/locations?query=${query}`)
+                .then(response => {
+                    setLocationSuggestions(response.data); // Assume API returns location suggestions
+                })
+                .catch(error => {
+                    console.error('Error fetching location suggestions:', error);
+                });
+        } else {
+            setLocationSuggestions([]); // Clear suggestions if query is too short
+        }
+    };
+
+    // Handle location input changes
+    const handleLocationChange = (event) => {
+        setLocationQuery(event.target.value);
+        fetchLocationSuggestions(event.target.value);
+    };
+
+    // Handle selecting a location from suggestions
+    const handleSuggestionClick = (suggestion) => {
+        setLocationQuery(suggestion);
+        setLocationSuggestions([]); // Clear suggestions after selection
     };
 
     const totalPages = Math.ceil(filteredCards.length / cardsPerPage);
@@ -82,15 +111,41 @@ useEffect(() => {
                     color="black"
                 />
                 <FaLocationDot fontSize="25px" />
-                <Input
-                    placeholder="Location"
-                    value={locationQuery}
-                    onChange={event => setLocationQuery(event.target.value)}
-                    width={searchInputWidth}
-                    borderRadius="20px"
-                    bg="aliceblue"
-                    color="black"
-                />
+                <Box position="relative" width={searchInputWidth}>
+                    <Input
+                        placeholder="Location"
+                        value={locationQuery}
+                        onChange={handleLocationChange}
+                        width="100%"
+                        borderRadius="20px"
+                        bg="aliceblue"
+                        color="black"
+                    />
+                    {locationSuggestions.length > 0 && (
+                        <List
+                            bg="white"
+                            border="1px solid lightgray"
+                            borderRadius="10px"
+                            mt={2}
+                            position="absolute"
+                            zIndex={10}
+                            width="100%"
+                            maxHeight="150px"
+                            overflowY="auto"
+                        >
+                            {locationSuggestions.map((suggestion, index) => (
+                                <ListItem
+                                    key={index}
+                                    p={2}
+                                    _hover={{ backgroundColor: 'gray.100', cursor: 'pointer' }}
+                                    onClick={() => handleSuggestionClick(suggestion)}
+                                >
+                                    {suggestion}
+                                </ListItem>
+                            ))}
+                        </List>
+                    )}
+                </Box>
                 <Button
                     onClick={handleSearch}
                     bg="rgb(226, 55, 112)"
@@ -109,13 +164,13 @@ useEffect(() => {
             <Flex wrap="wrap" gap={6} justify="center">
                 {currentCards.map(card => (
                     <Card
-                        key={card.jobId} // Ensure this is a unique identifier
+                        key={card.jobId}
                         title={card.title}
                         location={card.location}
                         salary={card.salary}
                         experience={card.experience}
                         jobDescription={card.jobDescription}
-                        jobId={card.jobId} // Pass jobId if needed
+                        jobId={card.jobId}
                         department={card.department}
                         roleCategory={card.roleCategory}
                         employmentType={card.employmentType}

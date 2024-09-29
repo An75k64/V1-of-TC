@@ -23,4 +23,7 @@ router.delete("/cards", cardController.deleteCards);
 // Route for getting the count 
 router.get("/count", cardController.Count);
 
+// Add the new route for fetching location suggestions
+router.get('/locations', cardController.getLocationSuggestions);
+
 module.exports = router;

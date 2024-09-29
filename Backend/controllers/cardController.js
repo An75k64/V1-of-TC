@@ -185,3 +185,27 @@ exports.Count = async (req, res) => {
        });
    }
 };
+
+// Function to fetch location suggestions
+exports.getLocationSuggestions = async (req, res) => {
+    try {
+        const query = req.query.query;
+        if (!query) {
+            return res.status(400).json({ message: "Query parameter is required" });
+        }
+
+        // Fetch distinct locations that start with the query
+        const locations = await Card.find({
+            location: { $regex: `^${query}`, $options: 'i' } // Case-insensitive matching
+        }).distinct('location');
+
+        if (locations.length === 0) {
+            return res.status(404).json({ message: "No job openings available at this location" });
+        }
+
+        res.status(200).json(locations);
+    } catch (error) {
+        console.error('Error fetching location suggestions:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+};
