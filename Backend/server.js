@@ -29,11 +29,19 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads"))); // Serve s
 mongoose
   .connect(process.env.MONGO_URI, {})
   .then(() => {
+    console.log("Mongo URI:", process.env.MONGO_URI);
     console.log("Connected to MongoDB");
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
   })
   .catch((error) => {
     console.error("Error connecting to MongoDB:", error.message);
   });
+
+
+
+
 
 // API Routes
 app.use("/api/resumes", resumeRouter);
@@ -55,6 +63,4 @@ app.get("/", (req, res) => {
   res.send("Welcome to TalentConnect API");
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+
