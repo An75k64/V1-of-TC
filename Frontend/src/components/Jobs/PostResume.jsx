@@ -23,15 +23,23 @@ import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 
-const apiUrl = import.meta.env.VITE_API_BASE_URL;
+import AnjaliImage from '../../assets/images/postResume/g1.jpeg';
+import RohitImage from '../../assets/images/postResume/b1.jpeg';
+import PriyaImage from '../../assets/images/postResume/g2.jpeg';
+import AmitImage from '../../assets/images/postResume/b2.jpeg';
+import NehaImage from '../../assets/images/postResume/g3.jpeg';
 
 const avatars = [
-  { name: "Anjali Sharma", url: "https://images.generated.photos/eb1a750d6b67aace6a4d7a94727ea146/face_photo/1280.jpg" },
-  { name: "Rohit Verma", url: "https://images.generated.photos/362b3a60fddff425fb5d4e6f94c64eb7/face_photo/1280.jpg" },
-  { name: "Priya Singh", url: "https://images.generated.photos/7b1c64d64f036e7d441119c7f7a34e24/face_photo/1280.jpg" },
-  { name: "Amit Patel", url: "https://images.generated.photos/a9b437ffb6a43db356236cb31c84e4ff/face_photo/1280.jpg" },
-  { name: "Neha Desai", url: "https://images.generated.photos/0bc6a2ec23ff51199fd2f21f10d6e4a7/face_photo/1280.jpg" },
+  { name: "Anjali Sharma", url: AnjaliImage },
+  { name: "Rohit Verma", url: RohitImage },
+  { name: "Priya Singh", url: PriyaImage },
+  { name: "Amit Patel", url: AmitImage },
+  { name: "Neha Desai", url: NehaImage },
 ];
+
+
+const apiUrl = import.meta.env.VITE_API_BASE_URL;
+
 
 const Blur = (props) => {
   return (
