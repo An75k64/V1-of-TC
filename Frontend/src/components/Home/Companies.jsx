@@ -18,21 +18,23 @@ import jin from '../../assets/images/company logo/jindal.jpg';
 // List of companies with logos
 const companiesList = [
   { name: "ARUN ENG & CO", logo: arunEngLogo },
+   { name: "Hitachi Chennai", logo: h },
   { name: "Arka Jain", logo: arkaJainLogo },
-  { name: "Jharkhand IT Solutions", logo: jharkhandITLogo },
-  { name: "Hitachi Payment Services", logo: hp },
-  { name: "Hitachi Chennai", logo: h },
-  { name: "Emversity", logo: emv },
+  { name: "JINDAL ORRISA", logo: jin },
   { name: "Hitachi Mumbai", logo: h },
-  { name: "Hitachi North East", logo: h },
-  { name: "Hitachi Jaipur", logo: h },
-  { name: "Hitachi Assam", logo: h },
-  { name: "Winso Software Pvt Ltd", logo: winso },
-  { name: "CMS", logo: cms },
-  { name: "M/s Unique Engineer's" }, // No logo for this company
+  { name: "Jharkhand IT Solutions", logo: jharkhandITLogo },
+  { name: "Hitachi Payment Services", logo: hp }, 
+  { name: "Emversity", logo: emv },
   { name: "Blue Craft", logo: blue },
+  { name: "Hitachi North East", logo: h },
+  { name: "Winso Software Pvt Ltd", logo: winso },
+  { name: "Hitachi Jaipur", logo: h },
+  { name: "CMS", logo: cms }, 
   { name: "A.K ENGINEERING CORPORATION", logo: ak },
-  { name: "JINDAL ORRISA", logo: jin }
+  { name: "Hitachi Assam", logo: h },  
+  { name: "M/s Unique Engineer's" }, // No logo for this company  
+
+  
 ];
 
 const Companies = () => {

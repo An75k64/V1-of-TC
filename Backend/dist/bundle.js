@@ -3568,6 +3568,12 @@ var notificationRoutes = __webpack_require__(/*! ./routes/notificationRoutes */ 
 var app = express();
 var PORT = process.env.PORT || 5000;
 
+// Middleware for CORS
+app.use(function (req, res, next) {
+  res.set('Access-Control-Allow-Origin', '*'); // Allow all origins
+  next();
+});
+
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
