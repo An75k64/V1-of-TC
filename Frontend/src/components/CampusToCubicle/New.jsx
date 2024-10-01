@@ -1,23 +1,26 @@
 import { Box, Heading, Text, Button, VStack, HStack, useBreakpointValue } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { FaArrowRight } from 'react-icons/fa';
 import hVideo from "../../assets/videos/Cam1.mp4"; // Local video
 
 const MotionBox = motion(Box);
+const MotionHeading = motion(Heading);
+const MotionText = motion(Text);
 
 const HeroPage = () => {
     const paddingX = useBreakpointValue({ base: 4, md: 8, lg: 16, xl: 24, "2xl": 32 });
     const buttonSize = useBreakpointValue({ base: 'md', md: 'lg', lg: 'lg', xl: 'lg' });
-
+    
     return (
         <Box
             position="relative"
             overflow="hidden"
-            py={{ base: 20, md: 24, lg: 36, xl: 30 }}  // Increased padding for larger screens
-            px={paddingX}  // Adjusted padding based on screen size
+            height={{ base: "520px", md: "3xl", lg: "3xl", xl:'90vh' }} 
+            minHeight="300px"  // Ensure minimum height is set
+            py={{ base: 32, md: 20, lg: 28 }}  // Adjusted vertical padding
+            px={paddingX}  // Adjusted horizontal padding based on screen size
             color="white"
-            pt={{ base: 24, md: 32, lg: 40, xl: 28 }}
-            pb={{ base: 96, md: 32, lg: 64, xl: 40 }}  // Responsive bottom padding
         >
             {/* Background Video */}
             <MotionBox
@@ -26,7 +29,7 @@ const HeroPage = () => {
                 left={0}
                 width="100%"
                 height="100%"
-                zIndex={-2}
+                zIndex={-1}  // Ensure video is behind the content
                 opacity={1}
                 transition="opacity 1s ease-in-out"  // Smooth fade-in effect
             >
@@ -39,52 +42,62 @@ const HeroPage = () => {
                         width: '100%',
                         height: '100%',
                         objectFit: 'cover',
-                        objectPosition: 'center',  // Ensures the video focuses on the center
+                        objectPosition: 'center',  // Keeps video focus on the center
                         transition: 'opacity 2s ease-in-out',  // Smooth transition
                     }}
                 />
             </MotionBox>
 
-            <VStack spacing={{ base: 6, md: 10 }} textAlign="center">
-                {/* Hero Text */}
-                <Heading
+            <VStack spacing={{ base: 6, md: 8 }} textAlign="center" zIndex={1}>
+                {/* Hero Text with Animation */}
+                <MotionHeading
                     as="h1"
-                    size= {{ base: "2xl", md: "2xl", lg: "3xl", xl: "3xl" }}  // Adjusted for larger screens
+                    size={{ base: "2xl", md: "3xl", lg: "3xl" }}  // Adjusted heading size
                     lineHeight={{ base: "short", lg: "shorter" }}
                     bgGradient="linear(to-r, yellow.200, yellow.500)"
                     bgClip="text"
                     fontWeight="bold"
                     letterSpacing="wide"
+                    initial={{ opacity: 0, y: -50 }}  // Start from invisible and up
+                    animate={{ opacity: 1, y: 0 }}  // End with visible and original position
+                    transition={{ duration: 1 }}  // Animation duration
                 >
                     CampusToCubicle:
                     <Text color="blue.200">Partnering for Future Success</Text>
-                </Heading>
-                <Text
-                    fontSize={{ base: "md", md: "lg", lg: "xl", xl: "xl" }}  // Responsive text sizes
+                </MotionHeading>
+
+                <MotionText
+                    fontSize={{ base: "md", md: "lg", lg: "xl", xl: "2xl" }}  // Responsive text sizes
                     maxW="800px"
                     color="gray.100"
+                    initial={{ opacity: 0, y: 20 }}  // Start from invisible and down
+                    animate={{ opacity: 1, y: 0 }}  // End with visible and original position
+                    transition={{ duration: 1, delay: 0.5 }}  // Animation duration and delay
                 >
                     TalentConnect bridges the campus-to-cubicle gap by aligning company needs with college engagement for efficient recruitment and tailored training for new hires.
-                </Text>
+                </MotionText>
 
                 {/* Call to Action Buttons */}
                 <HStack
                     spacing={{ base: 4, md: 8 }}
                     flexDirection={{ base: 'column', md: 'row' }}  // Stack buttons vertically on mobile
+                    justifyContent={{ base: 'center', md: 'flex-start' }}  // Center-align on mobile
                 >
-                    <Button
-                        colorScheme="transparent"
-                        border="2px solid"
-                        borderColor={"yellow.300"}
-                        _hover={{ backgroundColor: "yellow.300", color:'black'}}
-                        size={buttonSize}  // Responsive button sizes
-                        rightIcon={<FaArrowRight />}
-                        as={motion.button}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                    >
-                        Get Started
-                    </Button>
+                  <Link to="/contact">
+                        <Button
+                            colorScheme="transparent"
+                            border="2px solid"
+                            borderColor={"yellow.300"}
+                            _hover={{ backgroundColor: "yellow.300", color: 'black' }}
+                            size={buttonSize}  // Responsive button sizes
+                            rightIcon={<FaArrowRight />}
+                            as={motion.button}
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                        >
+                            Get Started
+                        </Button>
+                    </Link>
                 </HStack>
             </VStack>
         </Box>

@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Stack,Flex, Heading, Box, Text, useBreakpointValue } from "@chakra-ui/react";
+import { Container, Stack, Heading, Flex, Box, Text, useBreakpointValue } from "@chakra-ui/react";
 
 const Section3 = () => {
   const cardData = [
@@ -27,26 +27,24 @@ const Section3 = () => {
   ];
 
   return (
-    <Container maxW="100%" bg="#D7F3FE"  minH={"80vh"}>
-      <Flex justifyContent="center" alignItems="center">
-                <Heading
-                  fontFamily="ClashDisplay"
-                  fontSize={{ base: "xl", md: "2xl", lg: "4xl" }} // Responsive font size
-                  fontWeight="bold"
-                  p="2"
-                  mt={{base:10, md:20}}
-                  mb={{base:10, md:20}}
-                >
-                  <Text as="span" color="black">
-                    Our Unique
-                  </Text>
-                  <Text as="span" color="blue.400">
-                    {' '}Offerings
-                  </Text>
-                </Heading>
-              </Flex>
+    <Container maxW="100%" minH={"80vh"} pb={10}>
+      <Flex justifyContent="center" alignItems="center" mb={10} mt={10}>
+        <Heading
+          fontFamily="ClashDisplay"
+          fontSize={useBreakpointValue({ base: "2xl", sm: "3xl", "2xl": "5xl", "3xl": "7xl" })}
+          fontWeight="bolder"
+          textAlign="center"
+        >
+          <Text as="span" color="black">
+            Our Unique
+          </Text>
+          <Text as="span" color="blue.400">
+            {" "}Offerings
+          </Text>
+        </Heading>
+      </Flex>
       <Stack
-        direction={useBreakpointValue({ base: "column", md: "row" })}
+        direction={useBreakpointValue({ base: "column", md: "column", lg: "row" })}
         justify="space-around"
         spacing={10}
       >
@@ -104,10 +102,10 @@ const Section3 = () => {
               alignItems="center"
               textAlign="center"
             >
-              <Heading fontFamily={"ClashDisplay"} textTransform={"uppercase"} color="blue.400" as="h3" size="md" mb={2}>
+              <Heading fontFamily={"ClashDisplay"} textTransform={"uppercase"} color="blue.400" as="h3" size={useBreakpointValue({ base: "md", "2xl": "lg", "3xl": "3xl" })} mb={useBreakpointValue({ base: 4, md: 0, lg: -4, xl: -4 })}>
                 {card.title} <br /> <br />
               </Heading>
-              <Text text-align= {"justify"}>{card.description}</Text>
+              <Text text-align={"justify"} fontSize={useBreakpointValue({ base: "xs", md: "sm", lg: "xs", xl: "md", "2xl": "xl", "3xl": "4xl" })}>{card.description}</Text>
             </Box>
             <Box
               position="relative"
@@ -120,9 +118,9 @@ const Section3 = () => {
               color="white"
               className="titleBox"
               textAlign="center"
-              
+
             >
-              <Heading fontFamily={"ClashDisplay"}  as="h3" size="md">
+              <Heading fontFamily={"ClashDisplay"} as="h3" size={useBreakpointValue({ base: "sm", "2xl": "lg", "3xl": "3xl" })}>
                 {card.title}
               </Heading>
             </Box>

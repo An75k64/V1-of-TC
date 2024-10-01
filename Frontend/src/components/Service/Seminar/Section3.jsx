@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Stack,Flex, Heading, Box, Text, useBreakpointValue } from "@chakra-ui/react";
+import { Container, Stack, Heading,Flex, Box, Text, useBreakpointValue } from "@chakra-ui/react";
 
 const Section3 = () => {
   const cardData = [
@@ -15,39 +15,36 @@ const Section3 = () => {
       imageUrl:
         "https://images.unsplash.com/photo-1690264645463-a0aabdad7ca1?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       description:
-       "Master the art of interviewing through interactive mock sessions and coaching on proven techniques. Gain the confidence to articulate your value and make a lasting impression.",
+        "Master the art of interviewing through interactive mock sessions and coaching on proven techniques. Gain the confidence to articulate your value and make a lasting impression.",
     },
     {
       title: "Personal Branding",
       imageUrl:
         "https://imageio.forbes.com/specials-images/imageserve/660449096/Build-Your-Personal-Brand/960x0.jpg?format=jpg&width=1440",
       description:
-        "Develop a compelling personal brand that highlights your strengths and differentiates you from the competition. Leverage digital tools and networking strategies to amplify your visibility." ,
+        "Develop a compelling personal brand that highlights your strengths and differentiates you from the competition. Leverage digital tools and networking strategies to amplify your visibility.",
     },
   ];
 
-    return (
-    <Container maxW={"2x1"} bg="#FEE28F"  minH={"80vh"}>
-     <Flex justifyContent="center" alignItems="center">
-  <Heading
-    fontFamily="ClashDisplay"
-    fontSize={{ base: "xl", md: "2xl", lg: "4xl" }} // Responsive font size
-    fontWeight="bold"
-    p="2"
-    mb={{base:10, md:20}}
-    mt={{base:10, md:20}}
-  >
-    <Text as="span" color="black">
-      Empowering
-    </Text>
-    <Text as="span" color="blue.400">
-      {' '}Your Career
-    </Text>
-  </Heading>
-</Flex>
-
+  return (
+    <Container maxW="100%" minH={"80vh"} pb={10}>
+    <Flex justifyContent="center" alignItems="center" mb={10} mt={10}>
+        <Heading
+          fontFamily="ClashDisplay"
+          fontSize={useBreakpointValue({ base: "2xl", sm: "3xl", "2xl": "5xl", "3xl": "7xl" })} 
+          fontWeight="bolder"
+          textAlign="center"
+        >
+          <Text as="span" color="black">
+          Empowering
+          </Text>
+          <Text as="span" color="blue.400">
+          {" "}Your Career
+          </Text>
+        </Heading>
+      </Flex>
       <Stack
-        direction={useBreakpointValue({ base: "column", md: "row" })}
+        direction={useBreakpointValue({ base: "column", md: "column", lg: "row" })}
         justify="space-around"
         spacing={10}
       >
@@ -64,7 +61,6 @@ const Section3 = () => {
             bgSize="cover"
             bgImage={`url(${card.imageUrl})`}
             bgPosition="center"
-            
             _hover={{
               _before: {
                 content: `""`,
@@ -106,10 +102,10 @@ const Section3 = () => {
               alignItems="center"
               textAlign="center"
             >
-              <Heading fontFamily={"ClashDisplay"} textTransform={"uppercase"} color="blue.400" as="h3" size="md" mb={2}>
+              <Heading fontFamily={"ClashDisplay"} textTransform={"uppercase"} color="blue.400" as="h3" size={useBreakpointValue({base:"md", "2xl": "lg", "3xl": "3xl"})} mb={useBreakpointValue({base: 4, md: 0, lg: -4, xl: -4})}>
                 {card.title} <br /> <br />
               </Heading>
-              <Text text-align= {"justify"}>{card.description}</Text>
+              <Text text-align= {"justify"} fontSize={useBreakpointValue({base: "xs", md: "sm", lg: "xs", xl: "md", "2xl": "xl", "3xl": "4xl"})}>{card.description}</Text>
             </Box>
             <Box
               position="relative"
@@ -124,7 +120,7 @@ const Section3 = () => {
               textAlign="center"
               
             >
-              <Heading fontFamily={"ClashDisplay"}  as="h3" size="md">
+              <Heading fontFamily={"ClashDisplay"}  as="h3" size={useBreakpointValue({base:"sm", "2xl": "lg", "3xl": "3xl"})}>
                 {card.title}
               </Heading>
             </Box>

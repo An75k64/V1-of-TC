@@ -13,9 +13,9 @@ import {
 import { Link as RouterLink } from "react-router-dom";
 import section4Image from "../../../assets/images/OnCampus/s4.png"; // Adjust the path as needed
 
-const OCSection4 = () => {
+const Section4 = () => {
   return (
-    <Stack minH={"100vh"} direction={{ base: "column", md: "row" }} mt={{ base: 10, md: 0 }} >
+    <Stack minH={"100vh"} direction={{ base: "column", md: "column", lg: "row" }}  mt={{ base: 10, md: 10, lg: 0 }}>
       <Flex flex={1} align={"center"} justify={"center"}>
         <Box
           
@@ -48,10 +48,11 @@ const OCSection4 = () => {
             </Text>  
             <Text  fontFamily={"ClashDisplay"} color={"blue.400"}>
              Let's Talk.
-            </Text>                       
+            </Text> 
+                      
           </Heading>
           </Flex>
-          <Text fontSize={{ base: "md", lg: "lg" }} fontWeight="400" color={"black"}>
+          <Text fontSize={{ base: "md", lg: "lg" }} color={"gray.500"}>
             Empower Your Campus Recruitment with TalentConnect - Your Gateway to Top Talent!
           </Text>
           
@@ -62,7 +63,7 @@ const OCSection4 = () => {
               rounded={"full"}
               bg={"gray.500"}
               color={"white"}
-              _hover={{ transform: "scale(1.05)", boxShadow: "lg",  bg: "blue.300", color:"white" }}
+              _hover={{ transform: "scale(1.05)", boxShadow: "lg" , bg: "blue.300", color:"white"}}
             >
               Connect With Us
             </Button>
@@ -73,4 +74,4 @@ const OCSection4 = () => {
   );
 };
 
-export default OCSection4;
+export default Section4;

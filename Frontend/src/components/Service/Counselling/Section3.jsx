@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Stack, Heading, Box, Text, useBreakpointValue } from "@chakra-ui/react";
+import { Container, Stack, Heading,Flex, Box, Text, useBreakpointValue } from "@chakra-ui/react";
 
 const Section3 = () => {
   const cardData = [
@@ -27,21 +27,21 @@ const Section3 = () => {
   ];
 
   return (
-    <Container maxW="100%"  bg="rgb(221, 201, 245)" mt={10} minH={"80vh"} borderRadius={20}>
-      <Heading
-        fontFamily={"ClashDisplay"}
-        fontSize={{ base: "2xl", sm: "4xl" }}
-        fontWeight="bold"
-        color="blue.400"
-        textAlign="center"
-        mb={8}
-      >
-        <br />
-        Benefits
-      </Heading>
-      <br />
+    <Container maxW="100%" minH={"80vh"} pb={10}>
+    <Flex justifyContent="center" alignItems="center" mb={10} mt={10}>
+        <Heading
+          fontFamily="ClashDisplay"
+          fontSize={useBreakpointValue({ base: "2xl", sm: "3xl", "2xl": "5xl", "3xl": "7xl" })} 
+          fontWeight="bolder"
+          textAlign="center"
+        >
+          <Text as="span" color="blue.400">
+            {" "}Benefits
+          </Text>
+        </Heading>
+      </Flex>
       <Stack
-        direction={useBreakpointValue({ base: "column", md: "row" })}
+        direction={useBreakpointValue({ base: "column", md: "column", lg: "row" })}
         justify="space-around"
         spacing={10}
       >
@@ -99,10 +99,10 @@ const Section3 = () => {
               alignItems="center"
               textAlign="center"
             >
-              <Heading fontFamily={"ClashDisplay"} textTransform={"uppercase"} color="blue.400" as="h3" size="md" mb={2}>
+              <Heading fontFamily={"ClashDisplay"} textTransform={"uppercase"} color="blue.400" as="h3" size={useBreakpointValue({base:"md", "2xl": "lg", "3xl": "3xl"})} mb={useBreakpointValue({base: 4, md: 0, lg: -4, xl: -4})}>
                 {card.title} <br /> <br />
               </Heading>
-              <Text text-align= {"justify"}>{card.description}</Text>
+              <Text text-align= {"justify"} fontSize={useBreakpointValue({base: "xs", md: "sm", lg: "xs", xl: "md", "2xl": "xl", "3xl": "4xl"})}>{card.description}</Text>
             </Box>
             <Box
               position="relative"
@@ -117,7 +117,7 @@ const Section3 = () => {
               textAlign="center"
               
             >
-              <Heading fontFamily={"ClashDisplay"}  as="h3" size="md">
+              <Heading fontFamily={"ClashDisplay"}  as="h3" size={useBreakpointValue({base:"sm", "2xl": "lg", "3xl": "3xl"})}>
                 {card.title}
               </Heading>
             </Box>

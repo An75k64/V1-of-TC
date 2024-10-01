@@ -31,7 +31,7 @@ const Section3 = () => {
      <Flex justifyContent="center" alignItems="center">
       <Heading
         fontFamily={"ClashDisplay"}
-        fontSize={{ base: "2xl", sm: "4xl" }}
+        fontSize={useBreakpointValue({ base: "2xl", sm: "3xl", "2xl": "5xl", "3xl": "7xl" })}
         fontWeight="bold"
         color="black"
         textAlign="center"
@@ -44,7 +44,7 @@ const Section3 = () => {
       </Heading>
        <Heading
         fontFamily={"ClashDisplay"}
-        fontSize={{ base: "2xl", sm: "4xl" }}
+        fontSize={useBreakpointValue({ base: "2xl", sm: "3xl", "2xl": "5xl", "3xl": "7xl" })}  
         fontWeight="bold"
         color="blue.400"
         textAlign="center"
@@ -57,7 +57,7 @@ const Section3 = () => {
       <br />
       </Flex>
       <Stack
-        direction={useBreakpointValue({ base: "column", md: "row" })}
+        direction={useBreakpointValue({ base: "column", md: "column", lg: "row" })}
         justify="space-around"
         spacing={10}
       >
@@ -115,10 +115,10 @@ const Section3 = () => {
               alignItems="center"
               textAlign="center"
             >
-              <Heading fontFamily={"ClashDisplay"} textTransform={"uppercase"} color="blue.400" as="h3" size="md" mb={2}>
+              <Heading fontFamily={"ClashDisplay"} textTransform={"uppercase"} color="blue.400" as="h3" size={useBreakpointValue({base:"md", "2xl": "lg", "3xl": "3xl"})} mb={useBreakpointValue({base: 4, md: 0, lg: -4, xl: 4})}>
                 {card.title} <br /> <br />
               </Heading>
-              <Text text-align= {"justify"}>{card.description}</Text>
+              <Text text-align= {"justify"} fontSize={useBreakpointValue({base: "xs", md: "sm", lg: "xs", xl: "md", "3xl": "4xl"})}>{card.description}</Text>
             </Box>
             <Box
               position="relative"
@@ -133,7 +133,7 @@ const Section3 = () => {
               textAlign="center"
               
             >
-              <Heading fontFamily={"ClashDisplay"}  as="h3" size="md">
+              <Heading fontFamily={"ClashDisplay"}  as="h3" size={useBreakpointValue({base:"sm", "2xl": "lg", "3xl": "3xl"})}>
                 {card.title}
               </Heading>
             </Box>

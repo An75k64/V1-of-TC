@@ -15,7 +15,7 @@ import section4Image from "../../../assets/images/OnCampus/s4.png"; // Adjust th
 
 const Section4 = () => {
   return (
-    <Stack minH={"100vh"} direction={{ base: "column", md: "row" }}  mt={{ base: 10, md: 0 }}>
+    <Stack minH={"100vh"} direction={{ base: "column", md: "column", lg: "row" }}  mt={{ base: 10, md: 10, lg: 0 }}>
       <Flex flex={1} align={"center"} justify={"center"}>
         <Box
           

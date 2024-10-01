@@ -1,7 +1,7 @@
 import React from "react";
-import { Container, Stack, Flex, Heading, Box, Text, useBreakpointValue } from "@chakra-ui/react";
+import { Container, Stack, Heading,Flex, Box, Text, useBreakpointValue } from "@chakra-ui/react";
 
-const OCSection3 = () => {
+const Section3 = () => {
   const cardData = [
     {
       title: "Recruitment Fairs",
@@ -27,11 +27,11 @@ const OCSection3 = () => {
   ];
 
   return (
-    <Container maxW="full" bg="#B7CFF9" minH="80vh" py={10} px={{ base: 4, md: 8 }}>
-      <Flex justifyContent="center" alignItems="center" mb={10}>
+    <Container maxW="100%" minH={"80vh"} pb={10}>
+    <Flex justifyContent="center" alignItems="center" mb={10} mt={10}>
         <Heading
           fontFamily="ClashDisplay"
-          fontSize={{ base: "2xl", md: "3xl", lg: "4xl" }}
+          fontSize={useBreakpointValue({ base: "2xl", sm: "3xl", "2xl": "5xl", "3xl": "7xl" })} 
           fontWeight="bolder"
           textAlign="center"
         >
@@ -43,24 +43,23 @@ const OCSection3 = () => {
           </Text>
         </Heading>
       </Flex>
-
       <Stack
-        direction={useBreakpointValue({ base: "column", md: "row" })}
-        spacing={{ base: 8, md: 10 }}
+        direction={useBreakpointValue({ base: "column", md: "column", lg: "row" })}
         justify="space-around"
-        align="center"
+        spacing={10}
       >
         {cardData.map((card, index) => (
           <Box
             key={index}
-            w={{ base: "100%", md: "30%" }}
-            h={{ base: "60vh", md: "50vh" }}
+            //maxW={{ base: "100%", md: "md" }}
+            w={"full"}
+            h={"50vh"}
             overflow="hidden"
             position="relative"
             borderRadius="xl"
             boxShadow="lg"
-            bgImage={`url(${card.imageUrl})`}
             bgSize="cover"
+            bgImage={`url(${card.imageUrl})`}
             bgPosition="center"
             _hover={{
               _before: {
@@ -103,12 +102,10 @@ const OCSection3 = () => {
               alignItems="center"
               textAlign="center"
             >
-              <Heading fontFamily="ClashDisplay" textTransform="uppercase" color="blue.400" as="h3" size="md" mb={2}>
-                {card.title}
+              <Heading fontFamily={"ClashDisplay"} textTransform={"uppercase"} color="blue.400" as="h3" size={useBreakpointValue({base:"md", "2xl": "lg", "3xl": "3xl"})} mb={useBreakpointValue({base: 4, md: 0, lg: -4, xl: -4})}>
+                {card.title} <br /> <br />
               </Heading>
-              <Text fontSize={{ base: "sm", md: "md" }} textAlign="justify">
-                {card.description}
-              </Text>
+              <Text text-align= {"justify"} fontSize={useBreakpointValue({base: "xs", md: "sm", lg: "xs", xl: "md", "2xl": "xl", "3xl": "4xl"})}>{card.description}</Text>
             </Box>
             <Box
               position="relative"
@@ -121,8 +118,9 @@ const OCSection3 = () => {
               color="white"
               className="titleBox"
               textAlign="center"
+              
             >
-              <Heading fontFamily="ClashDisplay" as="h3" size="md">
+              <Heading fontFamily={"ClashDisplay"}  as="h3" size={useBreakpointValue({base:"sm", "2xl": "lg", "3xl": "3xl"})}>
                 {card.title}
               </Heading>
             </Box>
@@ -133,4 +131,4 @@ const OCSection3 = () => {
   );
 };
 
-export default OCSection3;
+export default Section3;
