@@ -27,12 +27,13 @@ function Card({ jobId, title, location, salary, experience, jobDescription }) {
 
     return (
         <Box
+            position="relative"
             height="355px"
             width="290px"
             padding="5px"
             borderRadius="15px"
-            border="2px solid black"
-            boxShadow="5px 5px 5px rgb(49, 49, 49)"
+            border="1px"
+            //boxShadow="5px 5px 5px rgb(49, 49, 49)"
             overflow="hidden"
             bg="white"
             _hover={{
@@ -79,33 +80,38 @@ function Card({ jobId, title, location, salary, experience, jobDescription }) {
                     <Text paddingLeft="5px">{experience}</Text>
                 </Flex>
             </VStack>
+
+            {/* Fixed Buttons at the Bottom */}
             <Flex
                 direction="row"
                 justify="center"
                 align="center"
                 gap="20px"
                 padding="10px 0"
+                position="absolute"
+                bottom="10px"   // Fixed at the bottom
+                width="100%"
             >
                 <Button
-                    bgGradient="linear(to-r, teal.300, blue.500)" 
+                    bgGradient="linear(to-r, blue.600, skyblue)" 
                     variant="solid"
                     borderRadius="15px"
                     color="white"
                     fontWeight="600"
                     onClick={onOpen}
-                    _hover={{transform: "scale(1.05)", bgGradient: "linear(to-r, blue.500, teal.300)" }}
+                    _hover={{transform: "scale(1.05)", bgGradient: "linear(to-r, blue, blue.600)" }}
                 >
-                    Apply
+                    Apply Now
                 </Button>
                 <a href='https://wa.me/917044326560'>
                     <Button
-                        bgGradient="linear(to-r, green.200, green.400, green.600)"
+                        bgGradient="linear(to-r, teal, green.300)" // Different color for Chat Now
                         variant="solid"
                         borderRadius="15px"
                         color="white"
                         fontWeight="600"
                         leftIcon={<FaWhatsapp />}
-                        _hover={{transform: "scale(1.05)", bgGradient: "linear(to-r, green.600, green.400, green.200)"}}
+                        _hover={{transform: "scale(1.05)", bgGradient: "linear(to-r, limegreen, teal)"}}
                     >
                         Chat Now
                     </Button>
