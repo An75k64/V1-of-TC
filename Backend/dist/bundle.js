@@ -3583,7 +3583,7 @@ app.use("/uploads", express["static"](path.join(__dirname, "uploads"))); // Serv
 mongoose.connect(process.env.MONGO_URI, {}).then(function () {
   console.log("Mongo URI:", process.env.MONGO_URI);
   console.log("Connected to MongoDB");
-  app.listen(PORT, function () {
+  app.listen(PORT, "0.0.0.0", function () {
     console.log("Server is running on port ".concat(PORT));
   });
 })["catch"](function (error) {

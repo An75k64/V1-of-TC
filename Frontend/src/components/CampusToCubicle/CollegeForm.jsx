@@ -16,33 +16,42 @@ import {
   Text,
   Textarea,
   useTheme,
-  useToast
+  useToast,
+  CloseButton,
 } from '@chakra-ui/react';
 
 const apiUrl = import.meta.env.VITE_API_BASE_URL;
+
 
 // Validation schema
 const validationSchema = Yup.object({
   polytechnicCourses: Yup.array().min(1, 'At least one Polytechnic/ITI/Diploma course must be selected'),
   ugCourses: Yup.array().min(1, 'At least one UG course must be selected'),
   pgCourses: Yup.array().min(1, 'At least one PG course must be selected'),
-  collegeName: Yup.string().required('College/Institution Name is required'),
+    collegeName: Yup.string()
+    .required('College/Institution Name is required')
+    .matches(/^[a-zA-Z\s]*$/, 'College name can only contain alphabets'),
   location: Yup.string().required('Location is required'),
-  studentsStrengthUG: Yup.number().required('Students Strength (UG) is required').positive().integer(),
-  studentsStrengthPG: Yup.number().required('Students Strength (PG) is required').positive().integer(),
+  studentsStrengthPolytechnic: Yup.number()
+    .required('Students Strength (Polytechnic/ITI/Diploma) is required')
+    .min(1, 'Students Strength (Polytechnic/ITI/Diploma) must be greater than 0'),
+  studentsStrengthUG: Yup.number().required('Students Strength (UG) is required').min(1, 'Students Strength (UG) must be greater than 0'),
+  studentsStrengthPG: Yup.number().required('Students Strength (PG) is required').min(1, 'Students Strength (PG) must be greater than 0'),
   collegeEmail: Yup.string().email('Invalid email address').required('College Email is required'),
-  mobileNumber: Yup.string().required('Mobile Number is required').matches(/^[0-9]{10}$/, 'Mobile Number must be exactly 10 digits'),
-  placementSeason: Yup.string().required('Placement Season Duration is required'),
+  mobileNumber: Yup.string().required('Mobile Number is required').matches(/^[6-9]\d{9}$/, 'Mobile Number must be valid'),
+  placementSeason: Yup.string()
+    .required('Placement Season Duration is required')
+    .matches(/^(0?[1-9]|1[0-2])\/\d{4}$/, 'Placement Season must be in MM/YYYY format'),
   upcomingEvents: Yup.string().required('Upcoming Student Engagements are required'),
-  partnershipInterests: Yup.array().min(1, 'At least one Partnership Interests must be selected'),
+  partnershipInterests: Yup.array().min(1, 'At least one Partnership Interest must be selected'),
 });
 
 const CollegeForm = () => {
   const theme = useTheme();
+  const toast = useToast();
   const [message, setMessage] = useState(null);
   const [messageType, setMessageType] = useState(null); // 'success' or 'error'
 
-  
   const formik = useFormik({
     initialValues: {
       polytechnicCourses: [],
@@ -50,6 +59,7 @@ const CollegeForm = () => {
       pgCourses: [],
       collegeName: '',
       location: '',
+      studentsStrengthPolytechnic: '',
       studentsStrengthUG: '',
       studentsStrengthPG: '',
       collegeEmail: '',
@@ -60,25 +70,38 @@ const CollegeForm = () => {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-       try {
-        //await axios.post('${apiUrl}/api/college/submit-college-form', values);
-
-        await axios.post(`${apiUrl}/api/college/submit-college-form`, values);
+      try {
+       await axios.post(`${apiUrl}/api/college/submit-college-form`, values);
         setMessage("Your college details have been submitted successfully.");
         setMessageType('success');
-        setTimeout(() => {
-          setMessage(null);
-        }, 5000); // Hide the success message after 5 seconds
-        formik.resetForm(); // Reset form fields after successful submission
+        formik.resetForm();
       } catch (error) {
         setMessage(error.response?.data || "Unable to submit college details.");
         setMessageType('error');
-        setTimeout(() => {
-          setMessage(null);
-        }, 5000); // Hide the error message after 5 seconds
       }
     }
   });
+
+const handleCourseSelection = (value, courseType) => {
+    if (value.includes('No Courses Offered')) {
+      formik.setFieldValue(courseType, ['No Courses Offered']);
+    } else {
+      formik.setFieldValue(courseType, value);
+    }
+  };
+
+  const isNoCourseOffered = (courseType) => {
+    return formik.values[courseType].includes('No Courses Offered');
+  };
+
+  const toggleCourses = (courseType, value) => {
+    if (value.includes('No Courses Offered')) {
+      formik.setFieldValue(courseType, ['No Courses Offered']);
+    } else {
+      formik.setFieldValue(courseType, value.filter(v => v !== 'No Courses Offered'));
+    }
+  };
+
 
   return (
     <Box>
@@ -149,6 +172,7 @@ const CollegeForm = () => {
           textAlign="center"
           zIndex={1000}
         >
+          <CloseButton position="absolute" top="8px" right="8px" onClick={() => setMessage(null)} />
           <Heading size="md" color={messageType === 'success' ? 'green.600' : 'red.600'} mb={4}>
             {messageType === 'success' ? 'Thank you!' : 'Error!'}
           </Heading>
@@ -202,20 +226,20 @@ const CollegeForm = () => {
               <FormControl isInvalid={formik.touched.polytechnicCourses && formik.errors.polytechnicCourses}>
                 <FormLabel fontWeight="bold">Polytechnic/ITI/Diploma Courses Offered (Select all that apply)</FormLabel>
                 <CheckboxGroup
-                  name="polytechnicCourses"
                   value={formik.values.polytechnicCourses}
-                  onChange={(value) => formik.setFieldValue('polytechnicCourses', value)}
+                  onChange={(value) => toggleCourses('polytechnicCourses', value)}
                 >
                   <Stack spacing={2}>
-                    <Checkbox value="Diploma in Engineering">Diploma in Engineering</Checkbox>
-                    <Checkbox value="Diploma in Pharmacy">Diploma in Pharmacy</Checkbox>
-                    <Checkbox value="Polytechnic in Mechanical Engineering">Polytechnic in Mechanical Engineering</Checkbox>
-                    <Checkbox value="Polytechnic in Civil Engineering">Polytechnic in Civil Engineering</Checkbox>
-                    <Checkbox value="ITI in Electrical">ITI in Electrical</Checkbox>
-                    <Checkbox value="ITI in Fitter">ITI in Fitter</Checkbox>
-                    <Checkbox value="ITI in Welding">ITI in Welding</Checkbox>
-                    <Checkbox value="ITI in Electronics">ITI in Electronics</Checkbox>
                     <Checkbox value="No Courses Offered">No Courses Offered</Checkbox>
+                    <Checkbox isDisabled={isNoCourseOffered('polytechnicCourses')} value="Diploma in Engineering">Diploma in Engineering</Checkbox>
+                    <Checkbox isDisabled={isNoCourseOffered('polytechnicCourses')} value="Diploma in Pharmacy">Diploma in Pharmacy</Checkbox>
+                    <Checkbox isDisabled={isNoCourseOffered('polytechnicCourses')} value="Polytechnic in Mechanical Engineering">Polytechnic in Mechanical Engineering</Checkbox>
+                    <Checkbox isDisabled={isNoCourseOffered('polytechnicCourses')} value="Polytechnic in Civil Engineering">Polytechnic in Civil Engineering</Checkbox>
+                    <Checkbox isDisabled={isNoCourseOffered('polytechnicCourses')} value="ITI in Electrical">ITI in Electrical</Checkbox>
+                    <Checkbox isDisabled={isNoCourseOffered('polytechnicCourses')} value="ITI in Fitter">ITI in Fitter</Checkbox>
+                    <Checkbox isDisabled={isNoCourseOffered('polytechnicCourses')} value="ITI in Welding">ITI in Welding</Checkbox>
+                    <Checkbox isDisabled={isNoCourseOffered('polytechnicCourses')} value="ITI in Electronics">ITI in Electronics</Checkbox>
+                 
                   </Stack>
                 </CheckboxGroup>
                 <Text color="red.500" fontSize="sm">{formik.errors.polytechnicCourses}</Text>
@@ -226,23 +250,24 @@ const CollegeForm = () => {
             <FormControl isInvalid={formik.touched.ugCourses && formik.errors.ugCourses}>
               <FormLabel fontWeight="bold">UG Courses Offered (Select all that apply)</FormLabel>
               <CheckboxGroup
-                value={formik.values.ugCourses}
-                onChange={(value) => formik.setFieldValue('ugCourses', value)}
+                 value={formik.values.ugCourses}
+                 onChange={(value) => toggleCourses('ugCourses', value)}
               >
                 <Stack spacing={2}>
-                  <Checkbox value="B.Tech">B.Tech</Checkbox>
-                  <Checkbox value="BBA">BBA</Checkbox>
-                  <Checkbox value="BSc">BSc</Checkbox>
-                  <Checkbox value="BCA">BCA</Checkbox>
-                  <Checkbox value="BE">BE</Checkbox>
-                  <Checkbox value="BA">BA</Checkbox>
-                  <Checkbox value="BBM">BBM</Checkbox>
-                  <Checkbox value="PUC Science Combinations">PUC Science Combinations</Checkbox>
-                  <Checkbox value="PUC Humanities Combinations">PUC Humanities Combinations</Checkbox>
-                  <Checkbox value="PUC Commerce combinations">PUC Commerce combinations</Checkbox>
-                  <Checkbox value="B.Pharma">B.Pharma</Checkbox>
-                  <Checkbox value="D.Pharma">D.Pharma</Checkbox>
-                  <Checkbox value="No Courses Offered">No Courses Offered</Checkbox>
+                   <Checkbox value="No Courses Offered">No Courses Offered</Checkbox>
+                  <Checkbox isDisabled={isNoCourseOffered('ugCourses')} value="B.Tech">B.Tech</Checkbox>
+                  <Checkbox isDisabled={isNoCourseOffered('ugCourses')} value="BBA">BBA</Checkbox>
+                  <Checkbox isDisabled={isNoCourseOffered('ugCourses')} value="BSc">BSc</Checkbox>
+                  <Checkbox isDisabled={isNoCourseOffered('ugCourses')} value="BCA">BCA</Checkbox>
+                  <Checkbox isDisabled={isNoCourseOffered('ugCourses')} value="BE">BE</Checkbox>
+                  <Checkbox isDisabled={isNoCourseOffered('ugCourses')} value="BA">BA</Checkbox>
+                  <Checkbox isDisabled={isNoCourseOffered('ugCourses')} value="BBM">BBM</Checkbox>
+                  <Checkbox isDisabled={isNoCourseOffered('ugCourses')} value="PUC Science Combinations">PUC Science Combinations</Checkbox>
+                  <Checkbox isDisabled={isNoCourseOffered('ugCourses')} value="PUC Humanities Combinations">PUC Humanities Combinations</Checkbox>
+                  <Checkbox isDisabled={isNoCourseOffered('ugCourses')} value="PUC Commerce combinations">PUC Commerce combinations</Checkbox>
+                  <Checkbox isDisabled={isNoCourseOffered('ugCourses')} value="B.Pharma">B.Pharma</Checkbox>
+                  <Checkbox isDisabled={isNoCourseOffered('ugCourses')} value="D.Pharma">D.Pharma</Checkbox>
+                  
                 </Stack>
               </CheckboxGroup>
               <Text color="red.500" fontSize="sm">{formik.errors.ugCourses}</Text>
@@ -253,18 +278,19 @@ const CollegeForm = () => {
               <FormLabel fontWeight="bold">PG Courses Offered (Select all that apply)</FormLabel>
               <CheckboxGroup
                 value={formik.values.pgCourses}
-                onChange={(value) => formik.setFieldValue('pgCourses', value)}
+                onChange={(value) => toggleCourses('pgCourses', value)}
               >
                 <Stack spacing={2}>
-                  <Checkbox value="M.Tech">M.Tech</Checkbox>
-                  <Checkbox value="MBA">MBA</Checkbox>
-                  <Checkbox value="MA">MA</Checkbox>
-                  <Checkbox value="MCA">MCA</Checkbox>
-                  <Checkbox value="ME">ME</Checkbox>
-                  <Checkbox value="MSc">MSc</Checkbox>
-                  <Checkbox value="MCom">MCom</Checkbox>
-                  <Checkbox value="M.Pharma">M.Pharma</Checkbox>
                   <Checkbox value="No Courses Offered">No Courses Offered</Checkbox>
+                  <Checkbox isDisabled={isNoCourseOffered('pgCourses')} value="M.Tech">M.Tech</Checkbox>
+                  <Checkbox isDisabled={isNoCourseOffered('pgCourses')} value="MBA">MBA</Checkbox>
+                  <Checkbox isDisabled={isNoCourseOffered('pgCourses')} value="MA">MA</Checkbox>
+                  <Checkbox isDisabled={isNoCourseOffered('pgCourses')} value="MCA">MCA</Checkbox>
+                  <Checkbox isDisabled={isNoCourseOffered('pgCourses')} value="ME">ME</Checkbox>
+                  <Checkbox isDisabled={isNoCourseOffered('pgCourses')} value="MSc">MSc</Checkbox>
+                  <Checkbox isDisabled={isNoCourseOffered('pgCourses')} value="MCom">MCom</Checkbox>
+                  <Checkbox isDisabled={isNoCourseOffered('pgCourses')} value="M.Pharma">M.Pharma</Checkbox>
+                  
                 </Stack>
               </CheckboxGroup>
               <Text color="red.500" fontSize="sm">{formik.errors.pgCourses}</Text>
@@ -303,6 +329,9 @@ const CollegeForm = () => {
                 value={formik.values.studentsStrengthUG}
                 onChange={formik.handleChange}
                 placeholder="Enter number of UG students"
+                //isDisabled={!formik.values.ugCourses.polytechnicCourses?.includes('No Courses Offered')}
+
+
               />
               <Text color="red.500" fontSize="sm">{formik.errors.studentsStrengthUG}</Text>
             </FormControl>
@@ -316,6 +345,7 @@ const CollegeForm = () => {
                 value={formik.values.studentsStrengthPG}
                 onChange={formik.handleChange}
                 placeholder="Enter number of PG students"
+               // isDisabled={!formik.values.pgCourses.includes('No Courses Offered')}
               />
               <Text color="red.500" fontSize="sm">{formik.errors.studentsStrengthPG}</Text>
             </FormControl>
@@ -339,6 +369,8 @@ const CollegeForm = () => {
               <Input
                 type="tel"
                 name="mobileNumber"
+                maxLength={10} 
+                pattern="\d*"
                 value={formik.values.mobileNumber}
                 onChange={formik.handleChange}
                 placeholder="Enter mobile number"
@@ -387,7 +419,7 @@ const CollegeForm = () => {
                 
               </Stack>
             </CheckboxGroup>
-            <Text color="red.500" fontSize="sm">{formik.errors.polytechnicCourses}</Text>
+            <Text color="red.500" fontSize="sm">{formik.errors.partnershipInterests}</Text>
           </FormControl>
 
             {/* Consent Notice */}
