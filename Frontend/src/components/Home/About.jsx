@@ -7,7 +7,7 @@ import {
   Box,
 } from "@chakra-ui/react";
 import { motion } from "framer-motion";
-import hVideo from "../../assets/videos/aboutUs.mp4";
+import hVideo from "../../assets/videos/aboutUss.mp4";
 
 export default function About() {
   const isMobile = useBreakpointValue({ base: true, xl: false });

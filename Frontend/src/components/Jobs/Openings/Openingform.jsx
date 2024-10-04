@@ -3,25 +3,17 @@ import { Box, Heading, Text, Input, Button, Stack, Icon, VStack, HStack } from '
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
-import { FaGraduationCap, FaClock , FaBriefcase,FaBuilding, FaTags,  } from 'react-icons/fa';
+import { FaGraduationCap, FaClock , FaBriefcase,FaBuilding, FaTags } from 'react-icons/fa';
 import { FaLocationDot } from "react-icons/fa6";
 import { IoPerson } from "react-icons/io5";
 import { RiSpeakFill } from "react-icons/ri";
 
 const apiUrl = import.meta.env.VITE_API_BASE_URL;
-{/* console.log('API Base URL:', apiUrl); // Log the API URL to the console */}
 
 const validationSchema = Yup.object({
-  name: Yup.string()
-    .required('Name is required')
-    .matches(/^[A-Za-z\s]+$/, 'Name should only contain letters and spaces'),
-  email: Yup.string()
-    .email('Invalid email')
-    .matches(/^[a-zA-Z0-9._%+-]+@gmail\.com$/, 'Email must be a valid Gmail address')
-    .required('Email is required'),
-  phone: Yup.string()
-    .matches(/^\d{10}$/, 'Phone number must be exactly 10 digits')
-    .required('Phone number is required'),
+  name: Yup.string().required('Name is required').matches(/^[A-Za-z\s]+$/, 'Name should only contain letters and spaces'),
+  email: Yup.string().email('Invalid email').matches(/^[a-zA-Z0-9._%+-]+@gmail\.com$/, 'Email must be a valid Gmail address').required('Email is required'),
+  phone: Yup.string().matches(/^\d{10}$/, 'Phone number must be exactly 10 digits').required('Phone number is required'),
   resume: Yup.mixed().required('Resume is required'),
 });
 
@@ -38,9 +30,7 @@ export default function OpeningForm({ jobId }) {
       }
       
       try {
-        //const response = await axios.get(`${apiUrl}/api/cards/cards/${jobId}`);
         const response = await axios.get(`${apiUrl}/api/cards/cards/${jobId}`);
-
         setJobDetails(response.data);
       } catch (error) {
         console.error("Error fetching job details:", error.response ? error.response.data : error.message);
@@ -60,8 +50,6 @@ export default function OpeningForm({ jobId }) {
     data.append('jobTitle', jobDetails.title);
 
     try {
-      //await axios.post('${apiUrl}/api/job-applications/apply', data, {
-
       await axios.post(`${apiUrl}/api/job-applications/apply`, data, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
@@ -81,163 +69,189 @@ export default function OpeningForm({ jobId }) {
   }
 
   return (
-    <Formik 
-      initialValues={{ name: '', email: '', phone: '', resume: null }}
-      validationSchema={validationSchema}
-      onSubmit={handleSubmit}
+    <Box
+      maxH="80vh"
+      overflowY="auto"
+      p={4}
+      css={{
+        /* For Webkit browsers (Chrome, Safari, Edge) */
+        '&::-webkit-scrollbar': {
+          width: '8px',
+        },
+        '&::-webkit-scrollbar-thumb': {
+          backgroundColor: '#4299E1', // Blue color for scrollbar
+          borderRadius: '10px',
+        },
+        '&::-webkit-scrollbar-thumb:hover': {
+          backgroundColor: '#2B6CB0', // Darker blue on hover
+        },
+        '&::-webkit-scrollbar-track': {
+          backgroundColor: '#E2E8F0', // Light gray track background
+          borderRadius: '10px',
+        },
+        /* For Firefox */
+        scrollbarWidth: 'thin',
+        scrollbarColor: '#4299E1 #E2E8F0',
+      }}
     >
-      {({ setFieldValue, isSubmitting, errors, touched }) => (
-        <Form>
-          <Stack spacing={4} bg={'white'} rounded={'xl'} p={{ base: 4, sm: 6, md: 8 }}>
-            <Heading fontSize="2xl" mb={4}>Job Description</Heading>
-            <Text fontSize="lg" mb={6}>{jobDetails.jobDescription}</Text><hr></hr>
+      <Formik 
+        initialValues={{ name: '', email: '', phone: '', resume: null }}
+        validationSchema={validationSchema}
+        onSubmit={handleSubmit}
+      >
+        {({ setFieldValue, isSubmitting, errors, touched }) => (
+          <Form>
+            <Stack spacing={4} bg={'white'} rounded={'xl'} p={{ base: 4, sm: 6, md: 8 }}>
+              <Heading fontSize="2xl" mb={4}>Job Description</Heading>
+              <Text fontSize="lg" mb={6}>{jobDetails.jobDescription}</Text><hr></hr>
 
-            {/* Job Details Section */}
-            <Heading fontSize="2xl" mb={4}>Job Role</Heading>
-            <VStack align="start" spacing={2} mb={6}>
-              <HStack spacing={2}>
-                <Icon as={FaLocationDot} boxSize={5} />
-                <Text color="gray.500">Work Location:</Text>
-                <Text>{jobDetails.location}</Text>
-              </HStack>
-              <HStack spacing={2}>
-                <Icon as={FaBuilding} boxSize={5} />
-                <Text color="gray.500">Department:</Text>
-                <Text>{jobDetails.department}</Text>
-              </HStack>
-              <HStack spacing={2}>
-                <Icon as={FaTags} boxSize={5} />
-                <Text width="120px" color="gray.500">Role / Category:</Text>
-                <Text width="auto">{jobDetails.jobRole} & {jobDetails.roleCategory}</Text>
-              </HStack>
-              <HStack spacing={2}>
-                <Icon as={FaClock} boxSize={5} />
-                <Text color="gray.500">Employment type:</Text>
-                <Text>{jobDetails.employmentType}</Text>
-              </HStack>
-            </VStack>
-            <hr></hr>
+              <Heading fontSize="2xl" mb={4}>Job Role</Heading>
+              <VStack align="start" spacing={2} mb={6}>
+                <HStack spacing={2}>
+                  <Icon as={FaLocationDot} boxSize={5} />
+                  <Text color="gray.500">Work Location:</Text>
+                  <Text>{jobDetails.location}</Text>
+                </HStack>
+                <HStack spacing={2}>
+                  <Icon as={FaBuilding} boxSize={5} />
+                  <Text color="gray.500">Department:</Text>
+                  <Text>{jobDetails.department}</Text>
+                </HStack>
+                <HStack spacing={2}>
+                  <Icon as={FaTags} boxSize={5} />
+                  <Text width="120px" color="gray.500">Role / Category:</Text>
+                  <Text width="auto">{jobDetails.jobRole} & {jobDetails.roleCategory}</Text>
+                </HStack>
+                <HStack spacing={2}>
+                  <Icon as={FaClock} boxSize={5} />
+                  <Text color="gray.500">Employment type:</Text>
+                  <Text>{jobDetails.employmentType}</Text>
+                </HStack>
+              </VStack>
+              <hr></hr>
 
-            <Heading fontSize="2xl" mb={4}>Job Requirements</Heading>
-            <VStack align="start" spacing={2} mb={6}>
-              <HStack spacing={2}>
-                <Icon as={FaBriefcase} boxSize={5} />
-                <Text color="gray.500">Experience:</Text>
-                <Text>{jobDetails.experience}</Text>
-              </HStack>
-              <HStack spacing={2}>
-                <Icon as={FaGraduationCap} boxSize={5} />
-                <Text color="gray.500">Education:</Text>
-                <Text>{jobDetails.education}</Text>
-              </HStack>
-              <HStack spacing={2}>
-                <Icon as={RiSpeakFill} boxSize={5} />
-                <Text color="gray.500">English level:</Text>
-                <Text>{jobDetails.englishLevel}</Text>
-              </HStack>
-              <HStack spacing={2}>
-                <Icon as={IoPerson} boxSize={5} />
-                <Text color="gray.500">Gender:</Text>
-                <Text>{jobDetails.gender}</Text>
-              </HStack>
-            </VStack>
+              <Heading fontSize="2xl" mb={4}>Job Requirements</Heading>
+              <VStack align="start" spacing={2} mb={6}>
+                <HStack spacing={2}>
+                  <Icon as={FaBriefcase} boxSize={5} />
+                  <Text color="gray.500">Experience:</Text>
+                  <Text>{jobDetails.experience}</Text>
+                </HStack>
+                <HStack spacing={2}>
+                  <Icon as={FaGraduationCap} boxSize={5} />
+                  <Text color="gray.500">Education:</Text>
+                  <Text>{jobDetails.education}</Text>
+                </HStack>
+                <HStack spacing={2}>
+                  <Icon as={RiSpeakFill} boxSize={5} />
+                  <Text color="gray.500">English level:</Text>
+                  <Text>{jobDetails.englishLevel}</Text>
+                </HStack>
+                <HStack spacing={2}>
+                  <Icon as={IoPerson} boxSize={5} />
+                  <Text color="gray.500">Gender:</Text>
+                  <Text>{jobDetails.gender}</Text>
+                </HStack>
+              </VStack>
 
-            {/* Form Fields */}
-            <Field name="name">
-              {({ field }) => (
-                <Input
-                  {...field}
-                  type="text"
-                  placeholder="Full Name"
-                  bg={"gray.100"}
-                  border={0}
-                  color={"gray.500"}
-                  _placeholder={{ color: "gray.500" }}
-                  size="lg"
-                />
-              )}
-            </Field>
-            {errors.name && touched.name && (
-              <Text color="red.500" textAlign="center">{errors.name}</Text>
-            )}
-
-            <Field name="email">
-              {({ field }) => (
-                <Input
-                  {...field}
-                  type="email"
-                  placeholder="Email Address"
-                  bg={"gray.100"}
-                  border={0}
-                  color={"gray.500"}
-                  _placeholder={{ color: "gray.500" }}
-                  size="lg"
-                />
-              )}
-            </Field>
-            {errors.email && touched.email && (
-              <Text color="red.500" textAlign="center">{errors.email}</Text>
-            )}
-
-            <Field name="phone">
-              {({ field }) => (
-                <Input
-                  {...field}
-                  type="tel"
-                  placeholder="Phone Number"
-                  bg={"gray.100"}
-                  border={0}
-                  color={"gray.500"}
-                  _placeholder={{ color: "gray.500" }}
-                  size="lg"
-                />
-              )}
-            </Field>
-            {errors.phone && touched.phone && (
-              <Text color="red.500" textAlign="center">{errors.phone}</Text>
-            )}
-
-            <Field name="resume">
-              {() => (
-                <Box>
+              <Field name="name">
+                {({ field }) => (
                   <Input
-                    type="file"
-                    accept=".pdf,.doc,.docx"
-                    onChange={(event) => setFieldValue("resume", event.currentTarget.files[0])}
-                    ref={fileInputRef}
-                    style={{
-                      padding: "8px",
-                      border: "none",
-                      borderRadius: "4px",
-                      background: "#f7fafc",
-                    }}
+                    {...field}
+                    type="text"
+                    placeholder="Full Name"
+                    bg={"gray.100"}
+                    border={0}
+                    color={"gray.500"}
+                    _placeholder={{ color: "gray.500" }}
+                    size="lg"
                   />
-                  <Text fontSize="sm" color="gray.500" mt={2}>
-                    Upload your resume in .pdf or .docx format.
-                  </Text>
-                  {errors.resume && <Text color="red.500">{errors.resume}</Text>}
-                </Box>
+                )}
+              </Field>
+              {errors.name && touched.name && (
+                <Text color="red.500" textAlign="center">{errors.name}</Text>
               )}
-            </Field>
 
-            <Button
-              mt={4}
-              colorScheme="blue"
-              isLoading={isSubmitting}
-              type="submit"
-               _hover={{transform: "scale(1.05)"}}
-            >
-              Apply
-            </Button>
+              <Field name="email">
+                {({ field }) => (
+                  <Input
+                    {...field}
+                    type="email"
+                    placeholder="Email Address"
+                    bg={"gray.100"}
+                    border={0}
+                    color={"gray.500"}
+                    _placeholder={{ color: "gray.500" }}
+                    size="lg"
+                  />
+                )}
+              </Field>
+              {errors.email && touched.email && (
+                <Text color="red.500" textAlign="center">{errors.email}</Text>
+              )}
 
-            {message && (
-              <Text color={message.type === 'success' ? 'green.500' : 'red.500'} textAlign="center">
-                {message.text}
-              </Text>
-            )}
-          </Stack>
-        </Form>
-      )}
-    </Formik>
+              <Field name="phone">
+                {({ field }) => (
+                  <Input
+                    {...field}
+                    type="tel"
+                    placeholder="Phone Number"
+                    bg={"gray.100"}
+                    border={0}
+                    color={"gray.500"}
+                    _placeholder={{ color: "gray.500" }}
+                    size="lg"
+                  />
+                )}
+              </Field>
+              {errors.phone && touched.phone && (
+                <Text color="red.500" textAlign="center">{errors.phone}</Text>
+              )}
+
+              <Field name="resume">
+                {() => (
+                  <Box>
+                    <Input
+                      type="file"
+                      accept=".pdf,.doc,.docx"
+                      onChange={(event) => setFieldValue("resume", event.currentTarget.files[0])}
+                      ref={fileInputRef}
+                      style={{
+                        padding: "8px",
+                        border: "none",
+                        borderRadius: "4px",
+                        background: "#f7fafc",
+                      }}
+                    />
+                    <Text fontSize="sm" color="gray.500" mt={2}>
+                      Upload your resume in .pdf or .docx format.
+                    </Text>
+                    {errors.resume && <Text color="red.500">{errors.resume}</Text>}
+                  </Box>
+                )}
+              </Field>
+
+              {message && (
+                <Text color={message.type === 'success' ? 'green.500' : 'red.500'} textAlign="center">
+                  {message.text}
+                </Text>
+              )}
+
+              <Button
+                type="submit"
+                bg={"blue.400"}
+                color={"white"}
+                size="lg"
+                fontSize="md"
+                _hover={{ bg: "blue.500" }}
+                isLoading={isSubmitting}
+              >
+                Submit Application
+              </Button>
+            </Stack>
+          </Form>
+        )}
+      </Formik>
+    </Box>
   );
 }
