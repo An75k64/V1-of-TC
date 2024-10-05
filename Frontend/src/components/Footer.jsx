@@ -18,9 +18,7 @@ const SocialButton = ({ children, label, href }) => {
     <chakra.button
       bg="transparent"
       borderRadius="md"
-      _hover={{
-        bg: useColorModeValue("pink.300", "pink.700"),
-      }}
+      
       as="a"
       href={href}
       target="_blank"
@@ -64,18 +62,12 @@ export default function Footer() {
             </Text>
             <Text fontWeight="bold">Follow Us</Text>
             <Stack direction="row" spacing={4}>
-              <SocialButton label="Follow us on Instagram" href="#">
-                <FaInstagram />
+              <SocialButton  label="Follow us on Instagram" href="https://www.instagram.com/talentconnect24/profilecard/?igsh=MnU2OGN3MnNmdmY0">
+                <FaInstagram size={24} />
               </SocialButton>
-              <SocialButton label="Follow us on LinkedIn" href="#">
-                <BsLinkedin />
-              </SocialButton>
-              <SocialButton label="Follow us on Twitter" href="#">
-                <FaTwitter />
-              </SocialButton>
-              <SocialButton label="Subscribe to us on YouTube" href="#">
-                <FaYoutube />
-              </SocialButton>
+              <SocialButton label="Follow us on LinkedIn"  href="https://www.linkedin.com/company/talentconnect24/">
+                <BsLinkedin size={24}/>
+              </SocialButton>              
             </Stack>
           </Stack>
           <Stack spacing={4} fontSize={useBreakpointValue({base:"sm", "3xl":"4xl"})}>

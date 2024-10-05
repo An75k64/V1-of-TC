@@ -790,6 +790,7 @@ var submitCollegeForm = /*#__PURE__*/function () {
             pgCourses: req.body.pgCourses,
             collegeName: req.body.collegeName,
             location: req.body.location,
+            studentsStrengthPolytechnic: req.body.studentsStrengthPolytechnic,
             studentsStrengthUG: req.body.studentsStrengthUG,
             studentsStrengthPG: req.body.studentsStrengthPG,
             collegeEmail: req.body.collegeEmail,
@@ -2609,13 +2610,14 @@ var collegeSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  studentsStrengthPolytechnic: {
+    type: Number
+  },
   studentsStrengthUG: {
-    type: Number,
-    required: true
+    type: Number
   },
   studentsStrengthPG: {
-    type: Number,
-    required: true
+    type: Number
   },
   collegeEmail: {
     type: String,
@@ -3106,11 +3108,10 @@ module.exports = router;
 // routes/collegeRoutes.js
 
 var express = __webpack_require__(/*! express */ "express");
-var _require = __webpack_require__(/*! express-validator */ "express-validator"),
-  check = _require.check;
+//const { check } = require("express-validator");
 var collegeController = __webpack_require__(/*! ../controllers/collegeController */ "./controllers/collegeController.js");
 var router = express.Router();
-router.post("/submit-college-form", [check("collegeName").not().isEmpty().withMessage("College name is required"), check("location").not().isEmpty().withMessage("Location is required"), check("studentsStrengthUG").isNumeric().withMessage("Students strength (UG) must be a number"), check("studentsStrengthPG").isNumeric().withMessage("Students strength (PG) must be a number"), check("collegeEmail").isEmail().withMessage("Valid email is required"), check("mobileNumber").isMobilePhone().withMessage("Valid mobile number is required"), check("placementSeason").not().isEmpty().withMessage("Placement season duration is required")], collegeController.submitCollegeForm);
+router.post("/submit-college-form", collegeController.submitCollegeForm);
 
 //Route to get all the college Form
 router.get("/college-forms", collegeController.getCollegeForms);

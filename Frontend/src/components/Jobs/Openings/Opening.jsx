@@ -158,9 +158,7 @@ function Opening() {
                     Search
                 </Button>
             </Flex>
-            <Heading as="h2" fontSize="25px" fontWeight="bold" mb={6}>
-                Recommendation
-            </Heading>
+           
             <Flex wrap="wrap" gap={6} justify="center">
                 {currentCards.map(card => (
                     <Card

@@ -16,6 +16,7 @@ import {
   Text,
   Textarea,
   useTheme,
+  CloseButton
 } from '@chakra-ui/react';
 
 
@@ -26,8 +27,16 @@ const validationSchema = Yup.object({
   industry: Yup.string().required('Industry Name is required'),
   location: Yup.string().required('Location is required'),
   companySize: Yup.number().required('Company Size is required').positive().integer(),
-  contactEmail: Yup.string().email('Invalid email address').required('Contact Person Email is required'),
-  contactPhone: Yup.string().required('Mobile Number is required').matches(/^[0-9]{10}$/, 'Mobile Number must be exactly 10 digits'),
+  contactPerson:  Yup.string()
+    .required('Person Name is required')
+    .matches(/^[a-zA-Z\s]*$/, 'Person name can only contain alphabets'),
+  contactEmail: Yup.string()
+    .email('Invalid email address')
+    .matches(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/, 'Invalid email format')
+    .required('Contact Person Email is required'),
+  contactPhone: Yup.string()
+    .required('Mobile Number is required')
+    .matches(/^[6-9]\d{9}$/, 'Mobile Number must be valid'),
   partnershipInterests: Yup.array().min(1, 'At least one Partnership Interests must be selected'),
     
 });
@@ -58,16 +67,12 @@ const CompanyForm = () => {
         await axios.post(`${apiUrl}/api/company/submit-company-form`, values);
         setMessage("Your company details have been submitted successfully.");
         setMessageType('success');
-        setTimeout(() => {
-          setMessage(null);
-        }, 5000); // Hide the success message after 5 seconds
+        
         formik.resetForm(); // Reset form fields after successful submission
       } catch (error) {
         setMessage(error.response?.data || "Unable to submit company details.");
         setMessageType('error');
-        setTimeout(() => {
-          setMessage(null);
-        }, 5000); // Hide the error message after 5 seconds
+        
       }
     }
   });
@@ -146,6 +151,7 @@ const CompanyForm = () => {
           textAlign="center"
           zIndex={1000}
         >
+          <CloseButton position="absolute" top="8px" right="8px" onClick={() => setMessage(null)} />
           <Heading size="md" color={messageType === 'success' ? 'green.600' : 'red.600'} mb={4}>
             {messageType === 'success' ? 'Thank you!' : 'Error!'}
           </Heading>
@@ -154,7 +160,6 @@ const CompanyForm = () => {
           </Text>
         </Box>
       )}
-
       {/* Form Section */}
       <Box
              p={8}
@@ -175,7 +180,7 @@ const CompanyForm = () => {
           right: 0,
           bottom: 0,
           left: 0,
-          backgroundImage: `url('https://www.transparenttextures.com/patterns/white-diamond.png')`,
+          
           opacity: 0.2,
           zIndex: -1,
         }}
@@ -284,6 +289,7 @@ const CompanyForm = () => {
               <Input
                 type="tel"
                 name="contactPhone"
+                 maxLength={10} 
                 value={formik.values.contactPhone}
                 onChange={formik.handleChange}
                 placeholder="Enter phone number"

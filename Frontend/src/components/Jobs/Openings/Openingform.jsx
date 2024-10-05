@@ -13,7 +13,7 @@ const apiUrl = import.meta.env.VITE_API_BASE_URL;
 const validationSchema = Yup.object({
   name: Yup.string().required('Name is required').matches(/^[A-Za-z\s]+$/, 'Name should only contain letters and spaces'),
   email: Yup.string().email('Invalid email').matches(/^[a-zA-Z0-9._%+-]+@gmail\.com$/, 'Email must be a valid Gmail address').required('Email is required'),
-  phone: Yup.string().matches(/^\d{10}$/, 'Phone number must be exactly 10 digits').required('Phone number is required'),
+  phone: Yup.string().matches(/^[6-9]\d{9}$/,"Phone Number must be valid").required('Phone number is required'),
   resume: Yup.mixed().required('Resume is required'),
 });
 
@@ -39,6 +39,25 @@ export default function OpeningForm({ jobId }) {
 
     fetchJobDetails();
   }, [jobId]);
+
+const handleFileChange = (event, setFieldValue) => {
+  const file = event.currentTarget.files[0];
+  const allowedExtensions = /(\.pdf|\.doc|\.docx)$/i;
+
+  if (!file) {
+    setMessage({ text: "No file selected.", type: "error" });
+    return;
+  }
+
+  // Validate file extension
+  if (!allowedExtensions.exec(file.name)) {
+    setMessage({ text: "Please upload a valid resume in .pdf or .doc/.docx format.", type: "error" });
+    fileInputRef.current.value = ""; // Reset the file input
+  } else {
+    setFieldValue("resume", file);
+  }
+};
+
 
   const handleSubmit = async (values, actions) => {
     const data = new FormData();
@@ -198,6 +217,7 @@ export default function OpeningForm({ jobId }) {
                     placeholder="Phone Number"
                     bg={"gray.100"}
                     border={0}
+                    maxLength={10}
                     color={"gray.500"}
                     _placeholder={{ color: "gray.500" }}
                     size="lg"
@@ -214,7 +234,9 @@ export default function OpeningForm({ jobId }) {
                     <Input
                       type="file"
                       accept=".pdf,.doc,.docx"
-                      onChange={(event) => setFieldValue("resume", event.currentTarget.files[0])}
+                      onChange={(event) =>
+                            handleFileChange(event, setFieldValue)
+                          }
                       ref={fileInputRef}
                       style={{
                         padding: "8px",

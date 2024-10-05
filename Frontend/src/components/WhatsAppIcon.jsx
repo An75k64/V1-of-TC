@@ -5,7 +5,7 @@ import whatsappIcon from '../assets/images/icons8-whatsapp-100.png';
 
 const WhatsAppIcon = () => {
   // Replace 'YOUR_PHONE_NUMBER' with your actual WhatsApp number (including country code, without '+' sign)
-  const phoneNumber = '7564974126';
+  const phoneNumber = '7979863193';
   const whatsappLink = `https://wa.me/${phoneNumber}`;
 
   return (

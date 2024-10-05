@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -23,28 +23,70 @@ import {
 const apiUrl = import.meta.env.VITE_API_BASE_URL;
 
 
+
 // Validation schema
 const validationSchema = Yup.object({
-  polytechnicCourses: Yup.array().min(1, 'At least one Polytechnic/ITI/Diploma course must be selected'),
-  ugCourses: Yup.array().min(1, 'At least one UG course must be selected'),
-  pgCourses: Yup.array().min(1, 'At least one PG course must be selected'),
-    collegeName: Yup.string()
+  polytechnicCourses: Yup.array()
+    .required('At least one Polytechnic/ITI/Diploma course must be selected'),
+  ugCourses: Yup.array()
+    .required('At least one UG course must be selected'),
+  pgCourses: Yup.array()
+    .required('At least one PG course must be selected'),
+
+  collegeName: Yup.string()
     .required('College/Institution Name is required')
     .matches(/^[a-zA-Z\s]*$/, 'College name can only contain alphabets'),
+
   location: Yup.string().required('Location is required'),
+
   studentsStrengthPolytechnic: Yup.number()
-    .required('Students Strength (Polytechnic/ITI/Diploma) is required')
-    .min(1, 'Students Strength (Polytechnic/ITI/Diploma) must be greater than 0'),
-  studentsStrengthUG: Yup.number().required('Students Strength (UG) is required').min(1, 'Students Strength (UG) must be greater than 0'),
-  studentsStrengthPG: Yup.number().required('Students Strength (PG) is required').min(1, 'Students Strength (PG) must be greater than 0'),
-  collegeEmail: Yup.string().email('Invalid email address').required('College Email is required'),
-  mobileNumber: Yup.string().required('Mobile Number is required').matches(/^[6-9]\d{9}$/, 'Mobile Number must be valid'),
+    .nullable()
+    .test('required-polytechnic', 'Students Strength is required', function (value) {
+      const { polytechnicCourses } = this.parent;
+      const hasCourses = Array.isArray(polytechnicCourses) && 
+                         polytechnicCourses.length > 0 && 
+                         !polytechnicCourses.includes('No Courses Offered');
+      return hasCourses ? (value !== null && value >= 1) : true; // Allow null if no courses are selected
+    }),
+  studentsStrengthUG: Yup.number()
+    .nullable()
+    .test('required-ug', 'Students Strength is required', function (value) {
+      const { ugCourses } = this.parent;
+      const hasCourses = Array.isArray(ugCourses) && 
+                         ugCourses.length > 0 && 
+                         !ugCourses.includes('No Courses Offered');
+      return hasCourses ? (value !== null && value >= 1) : true;
+    }),
+  studentsStrengthPG: Yup.number()
+    .nullable()
+    .test('required-pg', 'Students Strength is required', function (value) {
+      const { pgCourses } = this.parent;
+      const hasCourses = Array.isArray(pgCourses) && 
+                         pgCourses.length > 0 && 
+                         !pgCourses.includes('No Courses Offered');
+      return hasCourses ? (value !== null && value >= 1) : true;
+    }),
+
+  collegeEmail: Yup.string()
+    .email('Invalid email address')
+    .matches(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/, 'Invalid email format')
+    .required('College Email is required'),
+
+
+  mobileNumber: Yup.string()
+    .required('Mobile Number is required')
+    .matches(/^[6-9]\d{9}$/, 'Mobile Number must be valid'),
+
   placementSeason: Yup.string()
     .required('Placement Season Duration is required')
     .matches(/^(0?[1-9]|1[0-2])\/\d{4}$/, 'Placement Season must be in MM/YYYY format'),
+
   upcomingEvents: Yup.string().required('Upcoming Student Engagements are required'),
-  partnershipInterests: Yup.array().min(1, 'At least one Partnership Interest must be selected'),
+
+  partnershipInterests: Yup.array()
+    .min(1, 'At least one Partnership Interest must be selected'),
 });
+
 
 const CollegeForm = () => {
   const theme = useTheme();
@@ -69,39 +111,110 @@ const CollegeForm = () => {
       partnershipInterests: []
     },
     validationSchema: validationSchema,
-    onSubmit: async (values) => {
-      try {
-       await axios.post(`${apiUrl}/api/college/submit-college-form`, values);
-        setMessage("Your college details have been submitted successfully.");
-        setMessageType('success');
-        formik.resetForm();
-      } catch (error) {
-        setMessage(error.response?.data || "Unable to submit college details.");
-        setMessageType('error');
-      }
+
+ onSubmit: async (values) => {
+  // Check if all courses are 'No Courses Offered'
+  if (isAllNoCourses()) {
+    toast({
+      title: 'Error',
+      description: 'You cannot select "No Courses Offered" for all courses.',
+      status: 'error',
+      duration: 3000,
+      isClosable: true,
+    });
+    return; // Prevent form submission
+  }
+
+  // Validate student strength based on course selection
+  const errors = {};
+
+  // Check if each course type has courses selected and validate accordingly
+  const validateStrength = (courses, strengthField, fieldName) => {
+    if (
+      Array.isArray(courses) &&
+      courses.length > 0 &&
+      !courses.includes('No Courses Offered') &&
+      (values[strengthField] == null || values[strengthField] < 1)
+    ) {
+      errors[fieldName] = 'Students Strength is required';
     }
-  });
+  };
+
+  // Validate for each course type
+  validateStrength(values.polytechnicCourses, 'studentsStrengthPolytechnic', 'studentsStrengthPolytechnic');
+  validateStrength(values.ugCourses, 'studentsStrengthUG', 'studentsStrengthUG');
+  validateStrength(values.pgCourses, 'studentsStrengthPG', 'studentsStrengthPG');
+
+  // If there are validation errors, show toast and prevent submission
+  if (Object.keys(errors).length > 0) {
+    toast({
+      title: 'Validation Error',
+      description: Object.values(errors).join(', '),
+      status: 'error',
+      duration: 3000,
+      isClosable: true,
+    });
+    return; // Prevent form submission
+  }
+
+  // Proceed with form submission
+  try {
+    await axios.post(`${apiUrl}/api/college/submit-college-form`, values);
+    setMessage("Your college details have been submitted successfully.");
+    setMessageType('success');
+    formik.resetForm();
+  } catch (error) {
+    const errorMsg = error.response?.data || "Unable to submit college details.";
+    console.error(errorMsg); // Logging the error for debugging
+    setMessage(errorMsg);
+    setMessageType('error');
+  }
+}
+});
+
+// Effect to handle the error state when all courses are "No Courses Offered"
+useEffect(() => {
+  if (isAllNoCourses()) {
+    formik.setFieldError('polytechnicCourses', 'You cannot select "No Courses Offered" for all courses.');
+    formik.setFieldError('ugCourses', 'You cannot select "No Courses Offered" for all courses.');
+    formik.setFieldError('pgCourses', 'You cannot select "No Courses Offered" for all courses.');
+    
+    // Optionally clear strength fields if no courses are selected
+    formik.setFieldValue('studentsStrengthPolytechnic', null);
+    formik.setFieldValue('studentsStrengthUG', null);
+    formik.setFieldValue('studentsStrengthPG', null);
+  }
+}, [formik.values.polytechnicCourses, formik.values.ugCourses, formik.values.pgCourses]);
+
+const isAllNoCourses = () => {
+  return (
+    formik.values.polytechnicCourses.includes('No Courses Offered') &&
+    formik.values.ugCourses.includes('No Courses Offered') &&
+    formik.values.pgCourses.includes('No Courses Offered')
+  );
+};
 
 const handleCourseSelection = (value, courseType) => {
-    if (value.includes('No Courses Offered')) {
+  if (value.includes('No Courses Offered')) {
+    formik.setFieldValue(courseType, ['No Courses Offered']);
+  } else {
+    formik.setFieldValue(courseType, value);
+  }
+
+  // Uncheck all other boxes if "No Courses Offered" is selected
+  if (value.includes('No Courses Offered')) {
+    const otherCourses = value.filter(course => course !== 'No Courses Offered');
+    if (otherCourses.length > 0) {
       formik.setFieldValue(courseType, ['No Courses Offered']);
-    } else {
-      formik.setFieldValue(courseType, value);
     }
-  };
+  }
+};
 
-  const isNoCourseOffered = (courseType) => {
-    return formik.values[courseType].includes('No Courses Offered');
-  };
+const isNoCourseOffered = (courseType) => {
+  return formik.values[courseType].includes('No Courses Offered');
+};
 
-  const toggleCourses = (courseType, value) => {
-    if (value.includes('No Courses Offered')) {
-      formik.setFieldValue(courseType, ['No Courses Offered']);
-    } else {
-      formik.setFieldValue(courseType, value.filter(v => v !== 'No Courses Offered'));
-    }
-  };
-
+  
 
   return (
     <Box>
@@ -202,7 +315,7 @@ const handleCourseSelection = (value, courseType) => {
           right: 0,
           bottom: 0,
           left: 0,
-          backgroundImage: `url('https://www.transparenttextures.com/patterns/white-diamond.png')`,
+          
           opacity: 0.2,
           zIndex: -1,
         }}
@@ -225,10 +338,7 @@ const handleCourseSelection = (value, courseType) => {
               {/* Polytechnic/ITI/Diploma Courses Multi-Select */}
               <FormControl isInvalid={formik.touched.polytechnicCourses && formik.errors.polytechnicCourses}>
                 <FormLabel fontWeight="bold">Polytechnic/ITI/Diploma Courses Offered (Select all that apply)</FormLabel>
-                <CheckboxGroup
-                  value={formik.values.polytechnicCourses}
-                  onChange={(value) => toggleCourses('polytechnicCourses', value)}
-                >
+                <CheckboxGroup value={formik.values.polytechnicCourses} onChange={(value) => handleCourseSelection(value, 'polytechnicCourses')} >
                   <Stack spacing={2}>
                     <Checkbox value="No Courses Offered">No Courses Offered</Checkbox>
                     <Checkbox isDisabled={isNoCourseOffered('polytechnicCourses')} value="Diploma in Engineering">Diploma in Engineering</Checkbox>
@@ -251,10 +361,10 @@ const handleCourseSelection = (value, courseType) => {
               <FormLabel fontWeight="bold">UG Courses Offered (Select all that apply)</FormLabel>
               <CheckboxGroup
                  value={formik.values.ugCourses}
-                 onChange={(value) => toggleCourses('ugCourses', value)}
+                 onChange={(value) => handleCourseSelection(value ,'ugCourses')}
               >
                 <Stack spacing={2}>
-                   <Checkbox value="No Courses Offered">No Courses Offered</Checkbox>
+                  <Checkbox value="No Courses Offered">No Courses Offered</Checkbox>
                   <Checkbox isDisabled={isNoCourseOffered('ugCourses')} value="B.Tech">B.Tech</Checkbox>
                   <Checkbox isDisabled={isNoCourseOffered('ugCourses')} value="BBA">BBA</Checkbox>
                   <Checkbox isDisabled={isNoCourseOffered('ugCourses')} value="BSc">BSc</Checkbox>
@@ -278,7 +388,7 @@ const handleCourseSelection = (value, courseType) => {
               <FormLabel fontWeight="bold">PG Courses Offered (Select all that apply)</FormLabel>
               <CheckboxGroup
                 value={formik.values.pgCourses}
-                onChange={(value) => toggleCourses('pgCourses', value)}
+                onChange={(value) => handleCourseSelection(value, 'pgCourses')}
               >
                 <Stack spacing={2}>
                   <Checkbox value="No Courses Offered">No Courses Offered</Checkbox>
@@ -320,32 +430,35 @@ const handleCourseSelection = (value, courseType) => {
               <Text color="red.500" fontSize="sm">{formik.errors.location}</Text>
             </FormControl>
 
-            {/* Students Strength UG */}
-            <FormControl isInvalid={formik.touched.studentsStrengthUG && formik.errors.studentsStrengthUG}>
-              <FormLabel fontWeight="bold">Students Strength (UG)</FormLabel>
+            {/* Students Strength (Polytechnic/ITI/Diploma) */}
+            <FormControl isDisabled={isNoCourseOffered('polytechnicCourses')} isInvalid={formik.touched.studentsStrengthPolytechnic && formik.errors.studentsStrengthPolytechnic}>
+              <FormLabel fontWeight="bold">Students Strength (Polytechnic/ITI/Diploma)</FormLabel>
               <Input
                 type="number"
-                name="studentsStrengthUG"
-                value={formik.values.studentsStrengthUG}
-                onChange={formik.handleChange}
-                placeholder="Enter number of UG students"
-                //isDisabled={!formik.values.ugCourses.polytechnicCourses?.includes('No Courses Offered')}
+                {...formik.getFieldProps('studentsStrengthPolytechnic')}
+                disabled={isNoCourseOffered('polytechnicCourses')}
+              />
+              <Text color="red.500" fontSize="sm">{formik.errors.studentsStrengthPolytechnic}</Text>
+            </FormControl>
 
-
+            {/* Students Strength UG */}
+            <FormControl isDisabled={isNoCourseOffered('ugCourses')} isInvalid={formik.touched.studentsStrengthUG && formik.errors.studentsStrengthUG}>
+              <FormLabel fontWeight="bold">Students Strength (UG)</FormLabel>
+               <Input
+                type="number"
+                {...formik.getFieldProps('studentsStrengthUG')}
+                disabled={isNoCourseOffered('ugCourses')}
               />
               <Text color="red.500" fontSize="sm">{formik.errors.studentsStrengthUG}</Text>
             </FormControl>
 
             {/* Students Strength PG */}
-            <FormControl isInvalid={formik.touched.studentsStrengthPG && formik.errors.studentsStrengthPG}>
+            <FormControl isDisabled={isNoCourseOffered('pgCourses')} isInvalid={formik.touched.studentsStrengthPG && formik.errors.studentsStrengthPG}>
               <FormLabel fontWeight="bold">Students Strength (PG)</FormLabel>
               <Input
                 type="number"
-                name="studentsStrengthPG"
-                value={formik.values.studentsStrengthPG}
-                onChange={formik.handleChange}
-                placeholder="Enter number of PG students"
-               // isDisabled={!formik.values.pgCourses.includes('No Courses Offered')}
+                {...formik.getFieldProps('studentsStrengthPG')}
+                disabled={isNoCourseOffered('pgCourses')}
               />
               <Text color="red.500" fontSize="sm">{formik.errors.studentsStrengthPG}</Text>
             </FormControl>
@@ -385,7 +498,7 @@ const handleCourseSelection = (value, courseType) => {
                 name="placementSeason"
                 value={formik.values.placementSeason}
                 onChange={formik.handleChange}
-                placeholder="E.g: Feb 2024"
+                placeholder="E.g: 04/2025"
               />
               <Text color="red.500" fontSize="sm">{formik.errors.placementSeason}</Text>
             </FormControl>

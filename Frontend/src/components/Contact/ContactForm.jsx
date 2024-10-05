@@ -25,7 +25,7 @@ import {
   useTheme,
 } from '@chakra-ui/react';
 import { MdPhone, MdEmail, MdLocationOn, MdOutlineEmail } from 'react-icons/md';
-import { BsPerson, BsInstagram, BsLinkedin, BsTwitter, BsYoutube } from 'react-icons/bs';
+import { BsPerson, BsInstagram, BsLinkedin } from 'react-icons/bs';
 
 const apiUrl = import.meta.env.VITE_API_BASE_URL;
 
@@ -33,7 +33,10 @@ const apiUrl = import.meta.env.VITE_API_BASE_URL;
 const validationSchema = Yup.object({
   userType: Yup.string().required('User Type is required'),
   name: Yup.string().required('Name is required'),
-  email: Yup.string().email('Invalid email address').required('Email is required'),
+  email: Yup.string()
+    .email('Invalid email address')
+    .matches(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/, 'Invalid email format')
+    .required('Email is required'),
   message: Yup.string().required('Message is required'),
 });
 
@@ -51,8 +54,6 @@ export default function ContactForm() {
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       try {
-        //const response = await axios.post('${apiUrl}/api/contact/contact', values);
-
         const response = await axios.post(`${apiUrl}/api/contact/contact`, values);
         toast({
           title: 'Message sent.',
@@ -89,16 +90,18 @@ export default function ContactForm() {
               <WrapItem>
                 <Box>
                   <Heading>Contact Us</Heading>
-                  <Text mt={{ sm: 3, md: 3, lg: 5 }} color="gray.500">
+                  <Text mt={{ sm: 3, md: 3, lg: 5 }} color="gray.100">
                     Have questions or need assistance?
                   </Text>
-                  <Text mt={{ sm: 3, md: 3, lg: 5 }} color="gray.500">
+                  <Text mt={{ sm: 3, md: 3, lg: 5 }} color="gray.100">
                     Contact TalentConnect today.
                   </Text>
                   <Box py={{ base: 5, sm: 5, md: 8, lg: 10 }}>
                     <VStack spacing={4} alignItems="flex-start">
                       <HStack>
                         <Button
+                          as="a"
+                          href="tel:+91-7979863193"
                           size="md"
                           height="48px"
                           width="300px"
@@ -107,11 +110,13 @@ export default function ContactForm() {
                           _hover={{ border: "2px solid #D5006D" }}
                           leftIcon={<MdPhone color="#D5006D" size="20px" />}
                         >
-                          +91-9888678899
+                          +91-7979863193
                         </Button>
                       </HStack>
                       <HStack>
                         <Button
+                          as="a"
+                          href="mailto:us@talentsconnectss.com"
                           size="md"
                           height="48px"
                           width="300px"
@@ -120,7 +125,7 @@ export default function ContactForm() {
                           _hover={{ border: "2px solid #D5006D" }}
                           leftIcon={<MdEmail color="#D5006D" size="20px" />}
                         >
-                          talentconnect@gmail.com
+                          us@talentsconnectss.com
                         </Button>
                       </HStack>
                       <HStack>
@@ -142,39 +147,27 @@ export default function ContactForm() {
                     mt={{ lg: 10, md: 10 }}
                     spacing={5}
                     px={5}
-                    alignItems="flex-start"
+                  justify="center"
                   >
                     <IconButton
+                      as="a"
+                      href="https://www.instagram.com/talentconnect24/profilecard/?igsh=MnU2OGN3MnNmdmY0"
                       aria-label="Instagram"
                       variant="ghost"
                       size="lg"
                       isRound={true}
-                      _hover={{ bg: "#D5006D" }}
+                      _hover={{ bg: "blue.400" }}
                       icon={<BsInstagram size="28px" />}
                     />
                     <IconButton
+                      as="a"
+                      href="https://www.linkedin.com/company/talentconnect24/"
                       aria-label="LinkedIn"
                       variant="ghost"
                       size="lg"
                       isRound={true}
-                      _hover={{ bg: "#D5006D" }}
+                      _hover={{ bg: "blue.400" }}
                       icon={<BsLinkedin size="28px" />}
-                    />
-                    <IconButton
-                      aria-label="Twitter"
-                      variant="ghost"
-                      size="lg"
-                      isRound={true}
-                      _hover={{ bg: "#D5006D" }}
-                      icon={<BsTwitter size="28px" />}
-                    />
-                    <IconButton
-                      aria-label="YouTube"
-                      variant="ghost"
-                      size="lg"
-                      isRound={true}
-                      _hover={{ bg: "#D5006D" }}
-                      icon={<BsYoutube size="28px" />}
                     />
                   </HStack>
                 </Box>

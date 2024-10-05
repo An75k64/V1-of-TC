@@ -103,7 +103,7 @@ function Card({ jobId, title, location, salary, experience, jobDescription }) {
                 >
                     Apply Now
                 </Button>
-                <a href='https://wa.me/917044326560'>
+                <a href='https://wa.me/7979863193'>
                     <Button
                         bgGradient="linear(to-r, teal, green.300)" // Different color for Chat Now
                         variant="solid"

@@ -17,6 +17,7 @@ const submitCollegeForm = async (req, res) => {
       pgCourses: req.body.pgCourses,
       collegeName: req.body.collegeName,
       location: req.body.location,
+      studentsStrengthPolytechnic: req.body.studentsStrengthPolytechnic,
       studentsStrengthUG: req.body.studentsStrengthUG,
       studentsStrengthPG: req.body.studentsStrengthPG,
       collegeEmail: req.body.collegeEmail,

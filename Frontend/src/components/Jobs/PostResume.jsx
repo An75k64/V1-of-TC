@@ -71,11 +71,11 @@ const validationSchema = Yup.object({
     .email("Invalid email")
     .matches(
       /^[a-zA-Z0-9._%+-]+@gmail\.com$/,
-      "Email must be a valid Gmail address"
+      "Email Id must be a valid"
     )
     .required("Email is required"),
   phone: Yup.string()
-    .matches(/^[0-9]{10}$/, "Phone number must be exactly 10 digits")
+    .matches(/^[6-9]\d{9}$/,"Phone Number must be valid")
     .required("Phone number is required"),
   resume: Yup.mixed().required("Resume is required"),
 });
@@ -94,19 +94,24 @@ export default function PostResume() {
   });
   const blurZIndex = useBreakpointValue({ base: -1, md: -1, lg: 0 });
 
-  const handleFileChange = (event, setFieldValue) => {
-    const file = event.currentTarget.files[0];
-    const allowedExtensions = /(\.pdf|\.doc|\.docx)$/i;
-    
-    if (!allowedExtensions.exec(file.name)) {
-      setMessage({ text: "Please upload a valid resume in .pdf or .doc/.docx format.", type: "error" });
-      setShowError(true);
-      fileInputRef.current.value = ""; // Reset the file input
-    } else {
-      setFieldValue("resume", file);
-      setShowError(false);
-    }
-  };
+ const handleFileChange = (event, setFieldValue) => {
+  const file = event.currentTarget.files[0];
+  const allowedExtensions = /(\.pdf|\.doc|\.docx)$/i;
+
+  if (!file) {
+    setMessage({ text: "No file selected.", type: "error" });
+    return;
+  }
+
+  // Validate file extension
+  if (!allowedExtensions.exec(file.name)) {
+    setMessage({ text: "Please upload a valid resume in .pdf or .doc/.docx format.", type: "error" });
+    fileInputRef.current.value = ""; // Reset the file input
+  } else {
+    setFieldValue("resume", file);
+  }
+};
+
 
   const handleSubmit = async (values, actions) => {
     const data = new FormData();
@@ -287,6 +292,7 @@ export default function PostResume() {
                         placeholder="Phone number"
                         bg={"gray.100"}
                         border={0}
+
                         color={"gray.500"}
                         maxLength={10} // Ensures only 10 characters can be entered
                         pattern="\d*" // Ensures only digits can be entered
