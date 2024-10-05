@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Heading, Image, Text } from '@chakra-ui/react';
+import { Box, Button, Flex, Heading, Image, Text, useBreakpointValue } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import backgroundImg from '../../assets/images/campustocubicle/com.png'; // Import background image
@@ -20,24 +20,24 @@ function OnlineLearningPage() {
             py={8}
             fontFamily="Arial, sans-serif"
             overflow="hidden"
-            flexDirection={{ base: 'column', md: 'row-reverse' }}  // Reverse row to place content on right, image on left
+            flexDirection={useBreakpointValue({ base: 'column', md: 'column', lg: 'row-reverse' })}  // Reverse row to place content on right, image on left
         >
             {/* Right Section with Content */}
             <MotionBox
-                p={{ base: 4, md: 8 }}
-                width={{ base: '100%', md: '50%' }}
+                p={{ base: 4, md: 4, lg: 8 }}
+                width={useBreakpointValue({ base: '100%', md: '100%', lg: '50%' })}
                 initial={{ opacity: 0, x: 100 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.7 }}
                 textAlign={{ base: 'center', md: 'left' }}
                 mb={{ base: 8, md: 0 }}  // Margin bottom for mobile
             >
-                <Heading as="h2" fontSize={{ base: '3xl', md: '4xl' }} mb={4} color="blue.200">
-                    <Text as="span" color="yellow.300" fontSize={{ base: '2xl', md: '4xl' }}>
+                <Heading as="h2" fontSize={useBreakpointValue({ base: '3xl', md: '3xl', lg: '3xl', xl: '4xl' })} mb={4} color="blue.200">
+                    <Text as="span" color="yellow.300" fontSize={{ base: '2xl', md: '3xl', lg: '3xl', xl: '4xl' }}>
                         For Companies:
                     </Text> Why Partner with TalentConnect?
                 </Heading>
-                <Text fontSize={{ base: 'sm', md: 'lg' }} mb={6} color="black">
+                <Text fontSize={{ base: 'sm', md: 'md', lg: 'md', xl: 'lg' }} mb={6} color="black">
                     At TalentConnect, we're revolutionizing the way companies discover fresh talent. We have partnerships with various colleges and universities. Our platform is a gateway to a vibrant community of skilled graduates, each equipped with passion and proficiency. Whether you seek innovative thinkers or creative visionaries, TalentConnect offers a diverse pool of candidates poised to make an impact.
                 </Text>
                 <Link to="/company-form">
@@ -58,7 +58,7 @@ function OnlineLearningPage() {
 
             {/* Left Section with Image */}
             <MotionBox
-                width={{ base: '100%', md: '50%' }}
+                width={{ base: '100%', md: '100%', lg: '50%' }}
                 initial={{ opacity: 0, x: -100 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.7 }}
@@ -73,8 +73,8 @@ function OnlineLearningPage() {
                     alt="Company building"
                     objectFit="cover"
                     w="100%"
-                    h={{ base: '250px', md: 'auto' }}
-                    maxH={{ base: '300px', md: '600px' }}  // Adjust max height for mobile
+                    h={{ base: '250px', md: '260px',lg: 'auto' }}
+                    maxH={{ base: '300px', md: '400px', lg: '600px' }}  // Adjust max height for mobile
                     borderRadius={20}
                 />
             </MotionBox>

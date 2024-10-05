@@ -12,7 +12,7 @@ import { Link } from 'react-router-dom';
 
 const CTCSection4 = () => {
   return (
-    <Stack minH={"100vh"} direction={{ base: "column", md: "row" }} mt={0} id="connectus" paddingY={20} bg="yellow.100">
+    <Stack minH={"100vh"} direction={{ base: "column", md: 'column', lg: "row" }} mt={0} id="connectus" paddingY={20} bg="yellow.100">
       {/* Image Section */}
       <Flex flex={1} align={"center"} justify={"center"}>
         <Box

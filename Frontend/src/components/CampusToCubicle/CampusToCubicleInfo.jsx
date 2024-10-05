@@ -14,14 +14,14 @@ import {
 import { Link } from 'react-router-dom';
 import CTCSection3 from "./CTCsection3";
 import CTCSection4 from "./CTCsection4";
-import New from "./New"
-import New2 from "./New2"
+import Hero from "./hero"
+import College from "./college"
 import Company from "./Company"
 
 
 
 export default function CampusToCubicleInfo() {
-   
+
   return (
     <>
       {/* Section 1 */}
@@ -123,9 +123,9 @@ export default function CampusToCubicleInfo() {
           </Stack>
         </VStack>
       </Flex> */}
-    
+
       {/* CTCSection 2 - for company */}
-     {/* <Flex
+      {/* <Flex
         mt={185}
         w={"full"}
         h={"80vh"}
@@ -185,18 +185,17 @@ export default function CampusToCubicleInfo() {
           </Stack>
         </VStack>
       </Flex> */}
+        <Hero />
+        <College />
+        <Company />
 
-      <New/>
-      <New2/>
-      <Company/>
-
-      {/* Section 3 */}
+        {/* Section 3 */}
         <CTCSection3 />
 
-      {/* Section 4 */}
-       <div>
-      <CTCSection4 />
-    </div>
+        {/* Section 4 */}
+        <div>
+          <CTCSection4 />
+        </div>
     </>
   );
 }

@@ -35,7 +35,7 @@ const CTCSection3 = () => {
                 </Heading>
       <br />
       <Stack
-        direction={useBreakpointValue({ base: "column", md: "row" })}
+        direction={useBreakpointValue({ base: "column", md: 'column', lg: "row" })}
         justify="space-around"
         spacing={10}
       >

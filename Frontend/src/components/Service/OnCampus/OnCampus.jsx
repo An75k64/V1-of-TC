@@ -133,7 +133,7 @@ export default function OnCampus() {
             borderRadius="md"
             textAlign="left"
             color="black"
-            w={useBreakpointValue({ base: "full", md: "60%", lg: "60%", xl: "35%", "2xl": "50%", "3xl": "40%"  })} // Width for the text box
+            w={useBreakpointValue({ base: "full", md: "60%", lg: "60%", xl: "45%", "2xl": "50%", "3xl": "40%"  })} // Width for the text box
             h="100%" // Ensures the height matches the image
           >
             <Flex justifyContent="center" alignItems="center">
