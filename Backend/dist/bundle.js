@@ -353,12 +353,12 @@ var generateUniqueJobId = /*#__PURE__*/function () {
 // Create a new card
 exports.createCard = /*#__PURE__*/function () {
   var _ref2 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee2(req, res) {
-    var _req$body, title, location, salary, experience, jobDescription, jobRole, department, roleCategory, employmentType, education, englishLevel, gender, jobId, card;
+    var _req$body, title, location, salary, experience, jobDescription, jobRole, department, employmentType, education, englishLevel, gender, jobId, card;
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) switch (_context2.prev = _context2.next) {
         case 0:
           _context2.prev = 0;
-          _req$body = req.body, title = _req$body.title, location = _req$body.location, salary = _req$body.salary, experience = _req$body.experience, jobDescription = _req$body.jobDescription, jobRole = _req$body.jobRole, department = _req$body.department, roleCategory = _req$body.roleCategory, employmentType = _req$body.employmentType, education = _req$body.education, englishLevel = _req$body.englishLevel, gender = _req$body.gender; // Validate title
+          _req$body = req.body, title = _req$body.title, location = _req$body.location, salary = _req$body.salary, experience = _req$body.experience, jobDescription = _req$body.jobDescription, jobRole = _req$body.jobRole, department = _req$body.department, employmentType = _req$body.employmentType, education = _req$body.education, englishLevel = _req$body.englishLevel, gender = _req$body.gender; // Validate title
           if (!(!title || typeof title !== "string")) {
             _context2.next = 4;
             break;
@@ -381,7 +381,6 @@ exports.createCard = /*#__PURE__*/function () {
             jobDescription: jobDescription,
             jobRole: jobRole,
             department: department,
-            roleCategory: roleCategory,
             employmentType: employmentType,
             education: education,
             englishLevel: englishLevel,
@@ -2569,7 +2568,6 @@ var cardSchema = new mongoose.Schema({
   jobDescription: String,
   jobRole: String,
   department: String,
-  roleCategory: String,
   employmentType: String,
   education: String,
   englishLevel: String,

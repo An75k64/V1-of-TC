@@ -117,7 +117,7 @@ const handleExportExcel = async (data) => {
     { header: "Salary", key: "salary", width: 20 },
     { header: "Experience", key: "experience", width: 30 },
     { header: "Job Description", key: "jobDescription", width: 20 },
-    { header: "Role Category", key: "roleCategory", width: 20 },
+    
     { header: "Employment Type", key: "employmentType", width: 20 },
     { header: "Education", key: "education", width: 20 },   
     { header: "English Level", key: "englishLevel", width: 20 }, 
@@ -137,7 +137,7 @@ const handleExportExcel = async (data) => {
       jobDescription: job.jobDescription,
       jobRole: job.jobRole,
       department: job.department,
-      roleCategory: job.roleCategory,
+     
       employmentType: job.employmentType,
       education: job.education,
       englishLevel: job.englishLevel,
@@ -564,7 +564,7 @@ const handleDeleteSelected = async () => {
               </FormControl>
               <FormControl mt={4}>
               <FormLabel>Job Role</FormLabel>
-              <Input
+              <Textarea
                 value={formData.jobRole}
                 onChange={(e) =>
                   setFormData({ ...formData, jobRole: e.target.value })
@@ -582,15 +582,7 @@ const handleDeleteSelected = async () => {
               />
             </FormControl>
 
-            <FormControl mt={4}>
-              <FormLabel>Role Category</FormLabel>
-              <Input
-                value={formData.roleCategory}
-                onChange={(e) =>
-                  setFormData({ ...formData, roleCategory: e.target.value })
-                }
-              />
-            </FormControl>
+           
 
             <FormControl mt={4}>
               <FormLabel>Employment Type</FormLabel>
@@ -604,7 +596,7 @@ const handleDeleteSelected = async () => {
 
             <FormControl mt={4}>
               <FormLabel>Education</FormLabel>
-              <Input
+              <Textarea
                 value={formData.education}
                 onChange={(e) =>
                   setFormData({ ...formData, education: e.target.value })

@@ -10,7 +10,7 @@ const cardSchema = new mongoose.Schema(
     jobDescription: String,
     jobRole: String,
     department: String,
-    roleCategory: String,
+    
     employmentType: String,
     education: String,
     englishLevel: String,
